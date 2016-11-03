@@ -1,0 +1,185 @@
+.messageBox {
+    padding: 20px;
+    background-color: rgba(192,192,192,0.5);
+    color: black;
+    margin-bottom: 15px;
+    width: 200px;
+    visibility: hidden;
+    position: relative;
+}
+
+
+/* Message box */
+.alert {
+    padding: 20px;
+    background-color: #f44336; /*Red*/
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+    width: 150px;
+}
+.alert.success {
+    background-color: #4CAF50;/*Green*/
+} 
+.alert.info {
+    background-color: #2196F3;/*Blue*/
+} 
+.alert.warning {
+    background-color: #f2c810;/*Dark Yellow*/ 
+    color: black;
+} 
+
+/* Close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn.all {
+    color: black;
+    float: left;
+    font-size: 14px;
+
+    text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;  
+}
+.closebtn:hover {
+    color: #3b6999;
+}
+
+table {
+    top: 90px; 
+    left: 230px; 
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 70%;
+    table-layout:fixed;
+    padding-bottom: 1em;
+    margin-bottom: 3em;
+    box-shadow: 1px 5px 10px #999;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    word-wrap: break-word;
+}
+
+th {
+    background-color:   #3b6999;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+tr:nth-child(odd) {
+    background-color: #dfe3ee;
+}
+
+tr:hover {
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+body{
+    background-color: #f2f2f2;
+}
+
+.controls{
+    background-color: #cccccc;
+    float:left;
+    margin-right: 10px;
+    padding: 5px;
+    margin-left: 5px;
+    box-shadow: 0px 2px 2px #999;
+}
+
+.selected {outline: thin solid black;}
+
+#footerBar{
+    background-color: #3b6999;
+    margin-top: 200%;
+    bottom: 0;
+    width: 100%;
+    position: absolute;
+    color: white;
+    text-align: right;
+
+}
+
+#about:hover{
+    cursor: pointer;
+}
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #3b6999;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 6px #999;
+  margin-top: 10px;
+}
+
+.button:hover {background-color: #325881}
+
+.button:active {
+  background-color: #2b4b6e;
+  box-shadow: 0 2px #666;
+  transform: translateY(4px);
+}
+
+.stop-scrolling {
+    position: fixed; 
+    overflow-y: scroll;
+}
+
+#sketch-holder {
+    /*Should be same size as Canvas.*/
+    height: 600px;
+    width: 600px;
+}
+
+#scoreTable{
+    /*TODO: Make it so the scores only show after the game, and they don't take space during.*/
+    display: none;
+    visibility: visible;
+    /*position: absolute;
+    top: 0px;
+    left:0px;
+    /*
+    display: block; //none
+    visibility: hidden;*/
+    
+}
+
+#titleH1{
+    /*TODO: replace with logo when ready*/
+    background-color: #3b6999;
+    top: 0;
+    margin-top: 0;
+    color: white;
+}
