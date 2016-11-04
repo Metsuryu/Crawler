@@ -24,7 +24,7 @@ function sanitizeString(str){
 
 // Mongoose connection to MongoDB
 mongoose.connect('mongodb://localhost/test');  //For local testing
-//mongoose.connect('mongodb://username and password');
+//mongoose.connect("name pass");
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

@@ -158,7 +158,7 @@ function preload() {
   eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music //TODO: Change BGM to my own
-  BGM = loadSound("audio/FDSrushjet1fdx32.mp3");
+  BGM = loadSound("audio/FDSrushjet1fdx.mp3");
   BGM.setVolume(musicVolume);
 }
 
@@ -499,9 +499,11 @@ function restartgame(){
   fr = startingFr;
   frameRate(fr);
   pickLocation();
+  //TODO: Other stuff...
 }
 
 function submitScore(){
+  //TODO: See if I need to add something else here.
   inCinemaMode = true;
 }
 
@@ -622,9 +624,9 @@ function draw() {
       endScreen("Victory!");
     }else if(gameOver){
       if (music) {
-        //TODO: Modulate music for dramatic gameover effect
+        //TODO: Modulate music for dramatic effect
         //BGM.fade(0,1); //Doesn't work for now so just stop the music.
-        BGM.stop(); //"music" is still true, so if the game restats the music restarts.
+        //BGM.stop(); //"music" is still true, so if the game restats the music restarts.
       };
       endScreen("Game Over");
     };
@@ -651,8 +653,10 @@ function draw() {
     mouseOverResume = isMouseOver(resumeX,resumeY,resumeW,resumeH);
     //X Button
     mouseOverX = isMouseOver(xX,xY,xW,xH);
-    
+    //TODO:
+    //Music volume
     settingsMenu();
+
   }else{
     background(50);
     //Eat food
