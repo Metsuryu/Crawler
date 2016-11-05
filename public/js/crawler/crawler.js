@@ -36,7 +36,7 @@ function Crawler() {
       let pos = this.tail[i];
       let d = dist(this.x, this.y, pos.x, pos.y);
       if (d < 1) {
-          gameOver = true;
+          //gameOver = true;
       }
     }
   }
@@ -112,6 +112,11 @@ function Crawler() {
     textSize(14);
     text("Score: " + score, 10, 590);
     text("Speed: " + fr.toPrecision(3), 500, 590);
+    //Bonus food time
+    if (bonusFoodSpawned) {
+      text("Eat before: " + bonusFoodTime, 240, 590);
+    };
+
     //Bottom Line
     stroke(255);
     line(0, 560, 600, 560);

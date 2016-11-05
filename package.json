@@ -1,13 +1,13 @@
 {
-  "name": "testmean",
-  "version": "1.0.0",
-  "description": "testmean",
+  "name": "Crawler",
+  "version": "1.0.2",
+  "description": "Crawler a snake clone to demonstrate the MEAN stack",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mario Cannistrà",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
     "ejs": "^2.5.2",

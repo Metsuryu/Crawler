@@ -16,6 +16,10 @@ const scl = 20;
 let score = 0;
 let food;
 let bonusFood;
+let bonusFoodIcon = {x:210,y:574};
+let bonusFoodSpawned = false;
+const bonusFoodTimeC = 50;
+let bonusFoodTime = bonusFoodTimeC;
 let started = false;
 let gameOver = false;
 let win = false;
@@ -173,6 +177,8 @@ function setup() {
   lastPos = currentPos;
 }
 
+
+
 //Checks if an array (list) contains an object (obj) with the same x and y values
 function containsObject(obj, list) {
     for (let i = 0; i < list.length; i++) {
@@ -182,6 +188,14 @@ function containsObject(obj, list) {
     };
     return false;
 }
+
+// Returns a random integer between min (included) and max (excluded)
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 
 function victory(){
   //Change framerate to set the speed of victory animation
@@ -209,8 +223,10 @@ function pickLocation() {
   };
 
   //Pick a random coordinate from the available empty cols and rows and multiply it by scl, so it's on the grid
-  let allowedCol = (emptyCols[Math.floor(Math.random() * emptyCols.length)] * scl);
-  let allowedRow = (emptyRows[Math.floor(Math.random() * emptyRows.length)] * scl);
+  //TODO: Maybe need to add +1 to the max, since it may be excluded. Need more testing. 
+  //TODO: Or add it directly to the function and remove it from the rest of the code
+  let allowedCol = (emptyCols[getRandomInt(0,emptyCols.length)] * scl);
+  let allowedRow = (emptyRows[getRandomInt(0,emptyRows.length)] * scl);
 
   //Check if the food would spawn on top of the tail or head, if there is overlap, prevent it.
   for (let i = 0; i < s.tail.length; i++) {
@@ -250,12 +266,35 @@ if (overlap) {
   //TODO: Also change these comments after it's done
   //Then create the food with the first item in allowedCoords if available and multiply by scl
   //(Should pick a random one)
-  if (allowedCoords[0]) {
-    food = createVector( (allowedCoords[0].x *scl) , (allowedCoords[0].y*scl) );
+
+  if (allowedCoords.length > 0) {
+    let freeLoc = getRandomInt(0,allowedCoords.length+1);
+    food = createVector( (allowedCoords[freeLoc].x *scl) , (allowedCoords[freeLoc].y*scl) );
     created = true;
-    //Create bonus piece of food
-    if (allowedCoords[2]) {
-      bonusFood = createVector( (allowedCoords[1].x *scl) , (allowedCoords[1].y*scl) );
+    //Create bonus piece of food if there is at least one more free space
+    if (allowedCoords.length > 1) {
+      let bonusFreeLoc = getRandomInt(0,allowedCoords.length+1);
+      //If the random bonus location is the same as the normal food, see if one higher or one lower is available, and pick that. 
+      if (bonusFreeLoc === freeLoc) {
+        if (allowedCoords[bonusFreeLoc+1]) {
+          bonusFreeLoc += 1;
+          bonusFood = createVector( (allowedCoords[bonusFreeLoc].x *scl) , (allowedCoords[bonusFreeLoc].y*scl) );
+          bonusFoodSpawned = true;
+          bonusFoodTime = bonusFoodTimeC;
+        }else if( allowedCoords[bonusFreeLoc-1]){
+          bonusFreeLoc -= 1;
+          bonusFood = createVector( (allowedCoords[bonusFreeLoc].x *scl) , (allowedCoords[bonusFreeLoc].y*scl) );
+          bonusFoodSpawned = true;
+          bonusFoodTime = bonusFoodTimeC;
+        }else{
+          //If nothing is available, something went wrong.
+        };
+      } else {
+        //If the bonus location is different from the normal food, pick it.
+        bonusFood = createVector( (allowedCoords[bonusFreeLoc].x *scl) , (allowedCoords[bonusFreeLoc].y*scl) );
+        bonusFoodSpawned = true;
+        bonusFoodTime = bonusFoodTimeC;
+      };
     };
   }else{
     //No more space to spawn food
@@ -670,10 +709,18 @@ function draw() {
     //TODO: Bonus food should disappear when restarting a game, for now it doesn't.
     //Eat bonus food. Only inscreases score, not speed.
     if (bonusFood) {
+      if (bonusFoodSpawned) {
+        bonusFoodTime -=1;
+        if (bonusFoodTime <= 0) {
+          bonusFood = "";
+          bonusFoodSpawned = false;
+          };
+        };
       if ( s.eat(bonusFood) ) {
         if (audio) {eatSFX.play();};
-        score += 5;
+        score += 10;
         bonusFood = "";
+        bonusFoodSpawned = false;
         };
       };
 
@@ -687,6 +734,8 @@ function draw() {
     if (bonusFood) {
       fill(0,255,0);
       rect(bonusFood.x, bonusFood.y, scl, scl,5);
+      //And icon next to timer
+      rect(bonusFoodIcon.x, bonusFoodIcon.y, scl, scl,5);
     };
   };
 }
