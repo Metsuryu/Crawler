@@ -11,12 +11,14 @@ I continued to write on top of that code by adding more functionality and making
 My github: https://github.com/Metsuryu
 */
 
+const canvasX = 600;
+const canvasY = 600;
 let s;
 const scl = 20;
 let score = 0;
 let food;
 let bonusFood;
-let bonusFoodIcon = {x:210,y:574};
+const bonusFoodIcon = {x:210,y:574};
 let bonusFoodSpawned = false;
 const bonusFoodTimeC = 50;
 let bonusFoodTime = bonusFoodTimeC;
@@ -24,11 +26,11 @@ let started = false;
 let gameOver = false;
 let win = false;
 let rainbow = false;
-let backgroundColor = 50;
-let textBG = 40;
-let menuBG = 35;
-let textColor = "#3282FF"; //50,130,255
-let hovered = 100;
+const backgroundColor = 50;
+const textBG = 40;
+const menuBG = 35;
+const textColor = "#3282FF"; //50,130,255
+const hovered = 100;
 let mouseOverYes = false;
 let mouseOverPlayAgain = false;
 let music = false;
@@ -49,11 +51,11 @@ let musicStatus = "";
 let audioStatus = "";
 let settings = false;
 //Speed of the game is tied to framerate
-let maxFrCap = 30;
+const maxFrCap = 30;
 let frCap = 15;
 let startingFr = 8;
 let fr = 8;
-let cSpd = 1;
+const cSpd = 1;
 const UpDir =     {x:0, y:-cSpd};
 const DownDir =   {x:0, y:cSpd};
 const RightDir =  {x:cSpd, y:0};
@@ -61,97 +63,97 @@ const LeftDir =   {x:-cSpd,y:0};
 let currenetDir = {x:0, y:0};
 
 //Buttons positions
-let endTX = 235;
-let endTY = 200;
-let setTX = 300;
-let setTY = 95;
-//TAB to resume
-let resumeX = 175;
-let resumeY = 350;
-let resumeW = 250;
-let resumeH = 50;
-let resumeTX = resumeX + 125;
-let resumeTY = resumeY + 35;
+let endTX = 240; //Changes depending on victory or game over
+const endTY = 200;
+const setTX = 300;
+const setTY = 95;
+//ENTER to resume
+const resumeX = 175;
+const resumeY = 350;
+const resumeW = 250;
+const resumeH = 50;
+const resumeTX = resumeX + 125;
+const resumeTY = resumeY + 35;
 //X Button
-let xX = 455;
-let xY = 35;
-let xW = 40;
-let xH = 40;
-let xTX = 475;
-let xTY = 65;
+const xX = 455;
+const xY = 35;
+const xW = 40;
+const xH = 40;
+const xTX = 475;
+const xTY = 65;
 //Yes button
-let yesX = 165;
-let yesY = 365;
-let yesW = 90;
-let yesH = 50;
+const yesX = 165;
+const yesY = 365;
+const yesW = 90;
+const yesH = 50;
 //Play Again button
-let paX = 310;
-let paY = 365;
-let paW = 100;
-let paH = 80;
+const paX = 310;
+const paY = 365;
+const paW = 100;
+const paH = 80;
 //Music Toggle button
-let musX = 175;
-let musY = 135;
-let musW = 250;
-let musH = 50;
-let musTX = musX + 125;
-let musTY = musY + 35;
+const musX = 175;
+const musY = 135;
+const musW = 250;
+const musH = 50;
+const musTX = musX + 125;
+const musTY = musY + 35;
 //Increment Music button
-let muspX = 435;
-let muspY = 135;
-let muspW = 50;
-let muspH = 50;
-let muspTX = muspX + 25;
-let muspTY = muspY + 37;
+const muspX = 435;
+const muspY = 135;
+const muspW = 50;
+const muspH = 50;
+const muspTX = muspX + 25;
+const muspTY = muspY + 37;
 //Decrement Music Button
-let musmX = 115;
-let musmY = 135;
-let musmW = 50;
-let musmH = 50;
-let musmTX = musmX + 25;
-let musmTY = musmY + 37;
+const musmX = 115;
+const musmY = 135;
+const musmW = 50;
+const musmH = 50;
+const musmTX = musmX + 25;
+const musmTY = musmY + 37;
 //Audio Toggle button
-let auX = 175;
-let auY = 205;
-let auW = 250;
-let auH = 50;
-let auTX = auX + 125;
-let auTY = auY + 35;
+const auX = 175;
+const auY = 205;
+const auW = 250;
+const auH = 50;
+const auTX = auX + 125;
+const auTY = auY + 35;
 //Increment Audio button
-let aupX = 435;
-let aupY = 205;
-let aupW = 50;
-let aupH = 50;
-let aupTX = aupX + 25;
-let aupTY = aupY + 37;
+const aupX = 435;
+const aupY = 205;
+const aupW = 50;
+const aupH = 50;
+const aupTX = aupX + 25;
+const aupTY = aupY + 37;
 //Decrement Audio Button
-let aumX = 115;
-let aumY = 205;
-let aumW = 50;
-let aumH = 50;
-let aumTX =  aumX + 25;
-let aumTY = aumY + 37;
+const aumX = 115;
+const aumY = 205;
+const aumW = 50;
+const aumH = 50;
+const aumTX =  aumX + 25;
+const aumTY = aumY + 37;
 //Speed
-let speedX = 175;
-let speedY = 275;
-let speedW = 250;
-let speedH = 50;
-let spTX = speedX + 125;
-let spTY = speedY + 35;
+const speedX = 175;
+const speedY = 275;
+const speedW = 250;
+const speedH = 50;
+const spTX = speedX + 125;
+const spTY = speedY + 35;
 //Increment Speed button
-let sppX = 435;
-let sppY = 275;
-let sppW = 50;
-let sppH = 50;
-let sppTX = sppX + 25;
-let sppTY = sppY + 37;
+const sppX = 435;
+const sppY = 275;
+const sppW = 50;
+const sppH = 50;
+const sppTX = sppX + 25;
+const sppTY = sppY + 37;
 //Decrement speed Button
-let spmX = 115;
-let spmY = 275;
-let spmW = 50;
-let spmH = 50;
-let spmTX = spmX + 25;
-let spmTY = spmY + 37;
+const spmX = 115;
+const spmY = 275;
+const spmW = 50;
+const spmH = 50;
+const spmTX = spmX + 25;
+const spmTY = spmY + 37;
 //Preload media
 let fontArcade = "";
 let eatSFX = "";
@@ -167,7 +169,7 @@ function preload() {
 }
 
 function setup() {
-  let canvas = createCanvas(600, 600);
+  let canvas = createCanvas(canvasX, canvasY);
   canvas.parent("sketch-holder");
   background(backgroundColor);
   textFont(fontArcade);
@@ -190,6 +192,7 @@ function containsObject(obj, list) {
 }
 
 // Returns a random integer between min (included) and max (excluded)
+//TODO: Added +1 to the max, since it may be excluded. Need more testing. 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -223,8 +226,6 @@ function pickLocation() {
   };
 
   //Pick a random coordinate from the available empty cols and rows and multiply it by scl, so it's on the grid
-  //TODO: Maybe need to add +1 to the max, since it may be excluded. Need more testing. 
-  //TODO: Or add it directly to the function and remove it from the rest of the code
   let allowedCol = (emptyCols[getRandomInt(0,emptyCols.length)] * scl);
   let allowedRow = (emptyRows[getRandomInt(0,emptyRows.length)] * scl);
 
@@ -232,7 +233,7 @@ function pickLocation() {
   for (let i = 0; i < s.tail.length; i++) {
       let posit = s.tail[i];
       let distn = dist(allowedCol, allowedRow, posit.x, posit.y);
-      if (distn < 1) {
+      if (distn < scl) {
         overlap = true;
         break;
       };
@@ -246,6 +247,10 @@ if (overlap) {
   let allowedCoords = [];
 
   for (let j = 0; j < s.tail.length; j++) {
+    //TODO: Same as (BUG1)
+    if (!s.tail[j]) {
+      continue;
+    };
     let posNew = s.tail[j];
     forbiddenCoords.push({ x: (posNew.x/scl) , y: (posNew.y/scl) });
     };
@@ -262,18 +267,14 @@ if (overlap) {
               };
             };
 
-  //TODO: Make food spawn at a random available position, making it always spawn at the same spot is bad
-  //TODO: Also change these comments after it's done
   //Then create the food with the first item in allowedCoords if available and multiply by scl
-  //(Should pick a random one)
-
   if (allowedCoords.length > 0) {
-    let freeLoc = getRandomInt(0,allowedCoords.length+1);
+    let freeLoc = getRandomInt(0,allowedCoords.length-1); //-1 to avoid array overflow
     food = createVector( (allowedCoords[freeLoc].x *scl) , (allowedCoords[freeLoc].y*scl) );
     created = true;
     //Create bonus piece of food if there is at least one more free space
     if (allowedCoords.length > 1) {
-      let bonusFreeLoc = getRandomInt(0,allowedCoords.length+1);
+      let bonusFreeLoc = getRandomInt(0,allowedCoords.length-1);
       //If the random bonus location is the same as the normal food, see if one higher or one lower is available, and pick that. 
       if (bonusFreeLoc === freeLoc) {
         if (allowedCoords[bonusFreeLoc+1]) {
@@ -291,9 +292,11 @@ if (overlap) {
         };
       } else {
         //If the bonus location is different from the normal food, pick it.
-        bonusFood = createVector( (allowedCoords[bonusFreeLoc].x *scl) , (allowedCoords[bonusFreeLoc].y*scl) );
-        bonusFoodSpawned = true;
-        bonusFoodTime = bonusFoodTimeC;
+        if (bonusFreeLoc) {
+          bonusFood = createVector( (allowedCoords[bonusFreeLoc].x *scl) , (allowedCoords[bonusFreeLoc].y*scl) );
+          bonusFoodSpawned = true;
+          bonusFoodTime = bonusFoodTimeC;
+        };
       };
     };
   }else{
@@ -345,6 +348,7 @@ function endScreen(endText){
   rect(200,160,200,60);
   fill(textColor);
   textSize(26);
+  endTX = 240; //Adjust to victory position if it was previously changed by a gameover.
   if (endText === "Game Over") {endTX = 215;}; //Adjust positioning
   text(endText, endTX, endTY);
 
@@ -500,7 +504,7 @@ function settingsMenu(){
   rect(speedX,speedY,speedW,speedH);
   fill(textColor);
   text("Speed cap: " + fr.toPrecision(3)+"/"+frCap.toPrecision(3), spTX, spTY);
-  //Press TAB to resume
+  //Press ENTER to resume
   if (mouseOverResume) {
     fill(hovered);
   }else{
@@ -509,7 +513,7 @@ function settingsMenu(){
   rect(resumeX,resumeY,resumeW,resumeH);
   fill(textColor);
   textSize(20);
-  text("\"TAB\" to resume", resumeTX, resumeTY);
+  text("\"ENTER\" to resume", resumeTX, resumeTY);
   //Normalize textAlign
   textAlign(LEFT);
 }
@@ -522,6 +526,10 @@ function restartgame(){
     BGM.loop();
     BGM.play();
   };
+  if (bonusFoodSpawned) {
+    bonusFood = "";
+    bonusFoodSpawned = false;
+  };
   s.total = 0;
   s.tail = [];
   score = 0;
@@ -530,11 +538,12 @@ function restartgame(){
   gameOver = false;
   s.x = startingX;
   s.y = startingY;
+  currenetDir = {x:0, y:0};
   s.xspeed = 0;
   s.yspeed = 0;
-  r = 69;
-  g = 193;
-  b = 166;
+  red = 69;
+  green = 193;
+  blue = 166;
   fr = startingFr;
   frameRate(fr);
   pickLocation();
@@ -623,7 +632,7 @@ function mouseClicked(){
       fr = frCap;
     };
   };
-  //Resume and X have the same effect as pressing TAB to exit the settings menu
+  //Resume and X have the same effect as pressing ENTER to exit the settings menu
   if (mouseOverResume || mouseOverX ) {
     //framerate must be updated when settings are closed
     frameRate(fr);
@@ -693,7 +702,8 @@ function draw() {
     
     settingsMenu();
   }else{
-    background(50);
+    background(backgroundColor);
+
     //Eat food
     if (s.eat(food)) {
       if (audio) {eatSFX.play();};
@@ -705,8 +715,8 @@ function draw() {
         frameRate( fr );
       };
     };
-    //TODO: If not eaten for x time (steps defined by framerate) deisappears
-    //TODO: Bonus food should disappear when restarting a game, for now it doesn't.
+    //If not eaten by the time "bonusFoodTime" reaches 0 (steps defined by framerate) deisappears
+    //Bonus food disappears when restarting a game
     //Eat bonus food. Only inscreases score, not speed.
     if (bonusFood) {
       if (bonusFoodSpawned) {
@@ -724,9 +734,6 @@ function draw() {
         };
       };
 
-    s.update();
-    s.show();
-    s.death();
     //Food
     fill(255);
     rect(food.x, food.y, scl, scl,20);
@@ -736,7 +743,11 @@ function draw() {
       rect(bonusFood.x, bonusFood.y, scl, scl,5);
       //And icon next to timer
       rect(bonusFoodIcon.x, bonusFoodIcon.y, scl, scl,5);
-    };
+      };
+    //Update everything else after the food, so when eating it it doesn't show on top of the head.
+    s.update();
+    s.show();
+    s.death();
   };
 }
 
@@ -744,24 +755,27 @@ function draw() {
 //TODO: The fix to that bug causes poor responsiveness, make it so move commands can be queued (up to 1) for better responsiveness
 function keyPressed() {
   switch(keyCode) {
-    case TAB:
-    if (!settings) {
+    case ENTER:
+    if (!settings && !win && !gameOver) {
       //Max framerate while in settings for better responsiveness
       frameRate(maxFrCap);
-    settings = true;
-    }else{
+      settings = true;
+    }else if (settings && !win && !gameOver){
       //Return framerate to normal when returning to game
       frameRate(fr);
       settings = false;
-      }
+      };
+      break;
+    case SHIFT:
+      if ( win || gameOver && playing) {
+        restartgame();
+      };
       break;
     default:
-  };
+};
   
   if (lastPos.x === currentPos.x && lastPos.y === currentPos.y) {
-
     //Don't allow more movement until the head is in a new position
-  
   }else{
     switch(keyCode) {
       case UP_ARROW:
@@ -797,10 +811,7 @@ function keyPressed() {
       }
       break;
       default:
-      if (!playing || win || gameOver) {
-      }else{
-        return false;
-      };
+      if (playing){return false;};
     };
   };
 }

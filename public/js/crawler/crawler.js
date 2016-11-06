@@ -1,9 +1,10 @@
-let startingX = 300;
-let startingY = 280;
-let r = 69;
-let g = 193;
-let b = 166;
+let startingX = canvasX/2;
+let startingY = (canvasY/2)-(scl*2);
+let red = 69;
+let green = 193;
+let blue = 166;
 let counter = 0;
+const bottomLinePosY = canvasY-(scl*2);
 
 let currentPos = {x: 0, y: 0};
 let lastPos;
@@ -17,12 +18,12 @@ function Crawler() {
 
   this.eat = function(pos) {
     let d = dist(this.x, this.y, pos.x, pos.y);
-    if (d < 1) {
+    if (d < scl) {
       this.total++;
       return true;
     } else {
       return false;
-    }
+    };
   }
 
   this.dir = function(xyDir) {
@@ -33,12 +34,17 @@ function Crawler() {
 
   this.death = function() {
     for (let i = 0; i < this.tail.length; i++) {
+      //TODO: (BUG1:Undefined tail) Temporary workaround to missing tail on win. 
+      //Sometimes an element inside the tail array is missing, for some reason, so it causes a crash since it's undefined
+      if (!this.tail[i]) {
+        continue;
+      };
       let pos = this.tail[i];
       let d = dist(this.x, this.y, pos.x, pos.y);
-      if (d < 1) {
-          //gameOver = true;
-      }
-    }
+      if (d < scl) {
+          gameOver = true;
+      };
+    };
   }
 
   this.update = function() {
@@ -60,44 +66,44 @@ function Crawler() {
 
   this.show = function() {
     //Tail
-    fill(r, g, b);
+    fill(red, green, blue);
     for (let i = 0; i < this.tail.length; i++) {
       //pick a random color if rainbow
       if (rainbow) {
-        r = Math.floor(Math.random() * 255);
-        g = Math.floor(Math.random() * 255);
-        b = Math.floor(Math.random() * 255);
-        fill(r, g, b);
+        red = Math.floor(Math.random() * 255);
+        green = Math.floor(Math.random() * 255);
+        blue = Math.floor(Math.random() * 255);
+        fill(red, green, blue);
         }else if (win) {
           //A bright tile flows through the whole tail and loops until the game is restarted
           if (i === counter) {
-          r = 215;
-          g = 255;
-          b = 246;
-
-          fill(r, g, b);
+          red = 215;
+          green = 255;
+          blue = 246;
+          fill(red, green, blue);
         }else if(i === counter-1){
-          r = 150;
-          g = 255;
-          b = 231;
-          fill(r, g, b);
+          red = 150;
+          green = 255;
+          blue = 231;
+          fill(red, green, blue);
         }else{
-          r = 69;
-          g = 193;
-          b = 166;
-          fill(r, g, b);
-        }
-
+          red = 69;
+          green = 193;
+          blue = 166;
+          fill(red, green, blue);
         };
-
-        rect(this.tail[i].x, this.tail[i].y, scl, scl,2);
-        };
-
+      };
+      //TODO: Same as (BUG1)
+      if (!this.tail[i]) {
+        continue;
+      };
+      rect(this.tail[i].x, this.tail[i].y, scl, scl,2);
+    };
     //Head
-    r = 69;
-    g = 193;
-    b = 166;
-    fill(r, g, b);
+    red = 69;
+    green = 193;
+    blue = 166;
+    fill(red, green, blue);
         if (win) {
           counter +=1;
           if (counter > this.tail.length) {
@@ -119,7 +125,7 @@ function Crawler() {
 
     //Bottom Line
     stroke(255);
-    line(0, 560, 600, 560);
+    line(0, bottomLinePosY, canvasX, bottomLinePosY );
     stroke(0);
   }
 }

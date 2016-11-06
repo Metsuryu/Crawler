@@ -131,6 +131,7 @@ $("#sketch-holder").click(function(){
         playing = true;
       }
     }else if (mouseOverYes) {
+      //If win or lose, and yes is clicked
       $("#score").val( score );
       $("#addBTN").prop("disabled", false);
       $("#sketch-holder").uncinema();
@@ -138,10 +139,7 @@ $("#sketch-holder").click(function(){
       $("body").removeClass( "stop-scrolling" );
       $("#scoreTable").css({"visibility":"visible","display":"block"});
       playing = false;
-      //$(".controls").css({"visibility":"visible","display":"block"});
-      //Yes
-      //If win or lose, and yes is clicked, send score to database
-      
+      showMessage("alert info","Enter your name above,<br> a comment (optional), and then click \"Submit Score\"");
     }else if(settings){
       //Settings menu
     };
