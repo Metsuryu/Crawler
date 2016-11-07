@@ -35,8 +35,10 @@ function Crawler() {
   this.death = function() {
     for (let i = 0; i < this.tail.length; i++) {
       //TODO: (BUG1:Undefined tail) Temporary workaround to missing tail on win. 
+      //Don't know how to reproduce this, and it happens rarely, so for now it's low priority.
       //Sometimes an element inside the tail array is missing, for some reason, so it causes a crash since it's undefined
       if (!this.tail[i]) {
+        //Skip the current iteration if the tail piece is missing.
         continue;
       };
       let pos = this.tail[i];
@@ -122,7 +124,6 @@ function Crawler() {
     if (bonusFoodSpawned) {
       text("Eat before: " + bonusFoodTime, 240, 590);
     };
-
     //Bottom Line
     stroke(255);
     line(0, bottomLinePosY, canvasX, bottomLinePosY );

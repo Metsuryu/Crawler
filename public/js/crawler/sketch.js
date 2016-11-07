@@ -179,6 +179,20 @@ function setup() {
   lastPos = currentPos;
 }
 
+//TODO: Optional: See if I can make this non-blocking/async
+function BGMPlay() {
+/*//This attempt at making this async doesn't work
+  setTimeout ( function() {
+    if (BGM.isPlaying()) {BGM.stop();};
+    BGM.loop();
+    BGM.play();
+    },0);
+*/
+    if (BGM.isPlaying()) {BGM.stop();};
+    BGM.loop();
+    BGM.play();
+};
+
 
 
 //Checks if an array (list) contains an object (obj) with the same x and y values
@@ -192,7 +206,8 @@ function containsObject(obj, list) {
 }
 
 // Returns a random integer between min (included) and max (excluded)
-//TODO: Added +1 to the max, since it may be excluded. Need more testing. 
+//TODO: Added +1 to the max, since it may be excluded. Need more testing to verify.
+//TODO: Now removed the +1, seems to work fine, try to change this if bugs. 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -523,13 +538,13 @@ function restartgame(){
     inCinemaMode = true;
   };
   if (music) {
-    BGM.loop();
-    BGM.play();
+    BGMPlay();
   };
   if (bonusFoodSpawned) {
     bonusFood = "";
     bonusFoodSpawned = false;
   };
+  scoreSubmitted = false;
   s.total = 0;
   s.tail = [];
   score = 0;
@@ -564,8 +579,7 @@ function mouseClicked(){
   if (mouseOverMusic) {
     if (!music) {
       music = true;
-      BGM.loop();
-      BGM.play();
+      BGMPlay();
     }else{
       music = false;
       BGM.stop();
@@ -648,6 +662,9 @@ function isMouseOver(x,y,w,h){
   };
 }
 
+
+
+
 function draw() {
   if(!playing && !gameOver && !win){
     pauseText();
@@ -670,9 +687,8 @@ function draw() {
       endScreen("Victory!");
     }else if(gameOver){
       if (music) {
-        //TODO: Modulate music for dramatic gameover effect
-        //BGM.fade(0,1); //Doesn't work for now so just stop the music.
-        BGM.stop(); //"music" is still true, so if the game restats the music restarts.
+        //Stop the music on gameOver. "music" is still true, so if the game restats the music restarts.
+        BGM.stop();
       };
       endScreen("Game Over");
     };
@@ -752,7 +768,8 @@ function draw() {
 }
 
 //TODO: Fix bug that causes death when turning rapidly making it so you eat the tail piece right behind the head
-//TODO: The fix to that bug causes poor responsiveness, make it so move commands can be queued (up to 1) for better responsiveness
+//TODO: The fix to that bug causes poor responsiveness at low speeds, 
+//Maybe make it so move commands can be queued (up to 1) for better responsiveness, test it and see how it feels.
 function keyPressed() {
   switch(keyCode) {
     case ENTER:

@@ -4,8 +4,8 @@ let currentCM = "";
 let currentAge = "";
 let playing = false;
 let inCinemaMode = false;
-
-
+let scoreSubmitted = false;
+let highscoresVisible = false;
 
 //Removes potential characters that might break the page. Also done server-side.
 function sanitizeString(str){
@@ -61,7 +61,8 @@ app.controller("ctrl", function($scope, $http) {
     $scope.entrylist = response.data;
     });
 
-  //Get id of clicked entry TODO: comment out, no longer necessary.
+/*
+  //Get id of clicked entry TODO: comment out for now, no longer necessary.
   //Puts entry's data into text fields
   $scope.testID = function (event) {
     let thisE = event.currentTarget;
@@ -80,8 +81,9 @@ app.controller("ctrl", function($scope, $http) {
     currentCM = sanitizeString( document.getElementById("comment").value );
     currentAge = parseInt( document.getElementById("score").value );
     };
-});
+*/
 
+});
 
 
 $(document).ready(function() {
@@ -107,7 +109,9 @@ $("#sketch-holder").click(function(){
   if (!playing) {
     $( "body" ).addClass( "stop-scrolling" );
     //$(".controls").css({"visibility":"hidden","display":"block"});
-    $("#scoreTable").css({"visibility":"hidden","display":"block"});
+    if (!highscoresVisible) {
+      $("#scoreTable").css({"visibility":"hidden","display":"block"});
+    };
     $('#sketch-holder').cinema();
     inCinemaMode = true;
     playing = true;
@@ -116,6 +120,9 @@ $("#sketch-holder").click(function(){
       $('#sketch-holder').uncinema();
       inCinemaMode = false;
       $( "body" ).removeClass( "stop-scrolling" );
+      if (!highscoresVisible) {
+        $("#scoreTable").css({"visibility":"hidden","display":"none"});
+      };
       //$("#scoreTable").css({"visibility":"hidden","display":"block"});
       //$(".controls").css({"visibility":"visible","display":"block"});
       playing = false;
@@ -125,31 +132,42 @@ $("#sketch-holder").click(function(){
       //Return in cinema mode if it was off
       if (!inCinemaMode) {
         $( "body" ).addClass( "stop-scrolling" );
-        $("#scoreTable").css({"visibility":"hidden","display":"block"});
+        if (!highscoresVisible) {
+          $("#scoreTable").css({"visibility":"hidden","display":"none"});
+        };
         $('#sketch-holder').cinema();
         inCinemaMode = true;
         playing = true;
       }
     }else if (mouseOverYes) {
       //If win or lose, and yes is clicked
-      $("#score").val( score );
-      $("#addBTN").prop("disabled", false);
-      $("#sketch-holder").uncinema();
-      inCinemaMode = false;
-      $("body").removeClass( "stop-scrolling" );
-      $("#scoreTable").css({"visibility":"visible","display":"block"});
-      playing = false;
-      showMessage("alert info","Enter your name above,<br> a comment (optional), and then click \"Submit Score\"");
+      if (scoreSubmitted) {
+        showMessage("alert info","Your current score was already submitted.<br>Play another game to get a better score.");
+      }else{
+        $("#score").val( score );
+        $("#addBTN").prop("disabled", false);
+        $("#sketch-holder").uncinema();
+        inCinemaMode = false;
+        $("body").removeClass( "stop-scrolling" );
+        if (!highscoresVisible) {
+          $("#scoreTable").css({"visibility":"hidden","display":"none"});
+        };
+        playing = false;
+        showMessage("alert info","Enter your name above,<br>a comment (optional), and then click \"Submit Score\"");
+      };
+
     }else if(settings){
       //Settings menu
     };
-
-  }
+  };
 });
+
   //About
   $("#about").click(function(){
-    showMessage("alert info", "This is a page with a simple game that at the end lets you send your score to a database.\
-     The purpose of this is to demonstrate how MongoDB, Express, AngularJS, and NodeJs work together to create a MEAN web app.");
+    showMessage("alert info", "I initially made this page to demonstrate how MongoDB, Express, AngularJS, and NodeJs\
+     work together to create a MEAN web app.<br>\
+     At first it was just a database, but to make it more useful I made this Snake clone \
+     that at the end lets you send your score to a database.");
   });
 
   //About the game //TODO: Not sure about the stars
@@ -160,7 +178,20 @@ $("#sketch-holder").click(function(){
       <span style=\"color: black;\">★</span>When the Crawler gets long enough to cover the entire playing field, you win<br>\
       <span style=\"color: black;\">★</span>Get a higher score by eating the bonus food (the green dots)<br>\
       <span style=\"color: black;\">★</span>Click the game frame again to pause<br>\
-      <span style=\"color: black;\">★</span>Press TAB to open the settings menu");
+      <span style=\"color: black;\">★</span>Press ENTER to open the settings menu");
+  });
+
+  //Show Highscores Button
+  $("#showHS").click(function(){
+    if (!highscoresVisible) {
+      $("#scoreTable").css({"visibility":"visible","display":"block"});
+      $("#showHS").html("Hide Highscores");
+      highscoresVisible = true;
+    }else{
+      $("#scoreTable").css({"visibility":"hidden","display":"none"});
+      $("#showHS").html("Show Highscores");
+      highscoresVisible = false;    
+    }
   });
 
   //Add TODO: after the score is added, show the page it is on (if there is more than one page in the db) and maybe highlight it.
@@ -199,6 +230,7 @@ $("#sketch-holder").click(function(){
         $('#entriesTable tr:last').after(tableEntry);
         emptyFields();
         $("#addBTN").prop("disabled", true);
+        scoreSubmitted = true;
       },
       error: function(err){
         //console.log("Error: " , err);
@@ -215,6 +247,7 @@ $("#sketch-holder").click(function(){
 //If a entry is selected automatically change forms to entry's values, 
 //When clicking modify use new values that are in forms to modify it.
 //If not, tell user to fill the forms.
+/*
 $("#modifyBTN").click(function(b){
     b.preventDefault();
     if (!selectedElementId) {
@@ -317,6 +350,8 @@ $("#deleteBTN").click(function(b){
         return;
       });
   });
+
+  */
 
   //Close All
   $("#closeAll").click(function(b){
