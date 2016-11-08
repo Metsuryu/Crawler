@@ -9,8 +9,9 @@ const bodyParser = require('body-parser');
 //Config
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
+app.engine('html', require('ejs').__express);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-const jsonParser = bodyParser.json();
+//const jsonParser = bodyParser.json();
 const port = process.env.port || 3000;
 const limitOfResults = 15;
 
@@ -18,6 +19,7 @@ function sanitizeString(str){
   str = str.replace(/([/\\<>"'])+/g,"");
   return str.trim();
 };
+
 
 //To fix the deprecated promise issue use native promises here, like so:
 //mongoose.Promise = global.Promise; // Can't use it on Cloudnode, global.Promise only supported in ES6
@@ -81,6 +83,9 @@ app.get("/entries",function(req, res){
   }); 
 });
 
+
+
+
 app.post("/addentry", urlencodedParser , function(req, res){
   //TODO: Make sure values are not empty, except for comment
   //Get new data and save it to db
@@ -123,6 +128,13 @@ app.delete("/deleteentry", urlencodedParser, function(req, res) {
   res.end();
 });
 */
+
+
+//Google verification
+app.get("/google792be884c8fe585c.html",function(req, res){
+    res.render( "google792be884c8fe585c.html" );
+});
+
 
 //404 Route (Keep this as the last route)
 app.get('*', function(req, res){

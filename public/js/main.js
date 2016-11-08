@@ -164,9 +164,9 @@ $("#sketch-holder").click(function(){
 
   //About
   $("#about").click(function(){
-    showMessage("alert info", "I initially made this page to demonstrate how MongoDB, Express, AngularJS, and NodeJs\
+    showMessage("alert info", "I made this page to demonstrate how MongoDB, Express, AngularJS, and NodeJs\
      work together to create a MEAN web app.<br>\
-     At first it was just a database, but to make it more useful I made this Snake clone \
+     At first it was just a database, but to make it more useful I made this clone of the game Snake\
      that at the end lets you send your score to a database.");
   });
 
@@ -205,10 +205,10 @@ $("#sketch-holder").click(function(){
     usernameVal = sanitizeString(usernameVal);
     commentVal = sanitizeString(commentVal);
     scoreVal = sanitizeString(scoreVal);
-    //Check if there is any data
-    if (!usernameVal || !commentVal || !scoreVal) {
-      //No data
-      showMessage("alert","You must fill every field.");      
+    //Check if there is name and score, comment is optional.
+    if (!usernameVal || !scoreVal) {
+      //No name
+      showMessage("alert","You must enter a name.");      
       return
     }
     //TODO: If there is already an entry with the same values, give an error and return.
