@@ -158,6 +158,7 @@ const spmTY = spmY + 37;
 let fontArcade = "";
 let eatSFX = "";
 let BGM = "";
+
 function preload() {
   fontArcade = loadFont("fonts/sf-pixelate.bold-oblique.ttf");
   //Eating sound effect

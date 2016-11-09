@@ -5,7 +5,6 @@ let green = 193;
 let blue = 166;
 let counter = 0;
 const bottomLinePosY = canvasY-(scl*2);
-
 let currentPos = {x: 0, y: 0};
 let lastPos;
 function Crawler() {
@@ -44,7 +43,7 @@ function Crawler() {
       let pos = this.tail[i];
       let d = dist(this.x, this.y, pos.x, pos.y);
       if (d < scl) {
-          gameOver = true;
+        gameOver = true;
       };
     };
   }
@@ -76,25 +75,25 @@ function Crawler() {
         green = Math.floor(Math.random() * 255);
         blue = Math.floor(Math.random() * 255);
         fill(red, green, blue);
-        }else if (win) {
+      }else if (win) {
           //A bright tile flows through the whole tail and loops until the game is restarted
           if (i === counter) {
-          red = 215;
-          green = 255;
-          blue = 246;
-          fill(red, green, blue);
-        }else if(i === counter-1){
-          red = 150;
-          green = 255;
-          blue = 231;
-          fill(red, green, blue);
-        }else{
-          red = 69;
-          green = 193;
-          blue = 166;
-          fill(red, green, blue);
+            red = 215;
+            green = 255;
+            blue = 246;
+            fill(red, green, blue);
+          }else if(i === counter-1){
+            red = 150;
+            green = 255;
+            blue = 231;
+            fill(red, green, blue);
+          }else{
+            red = 69;
+            green = 193;
+            blue = 166;
+            fill(red, green, blue);
+          };
         };
-      };
       //TODO: Same as (BUG1)
       if (!this.tail[i]) {
         continue;
@@ -106,13 +105,13 @@ function Crawler() {
     green = 193;
     blue = 166;
     fill(red, green, blue);
-        if (win) {
-          counter +=1;
-          if (counter > this.tail.length) {
-            fill(215, 255, 246);
-          };
-          if (counter >= this.tail.length+1) {counter = 0;};
-        };
+    if (win) {
+      counter +=1;
+      if (counter > this.tail.length) {
+        fill(215, 255, 246);
+      };
+      if (counter >= this.tail.length+1) {counter = 0;};
+    };
 
     rect(this.x, this.y, scl, scl,2);
     //Score and speed

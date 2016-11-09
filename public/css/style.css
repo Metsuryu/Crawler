@@ -162,6 +162,7 @@ html{
 
 #sketch-holder {
     /*Should be same size as Canvas.*/
+    background-color: #323232;
     height: 600px;
     width: 600px;
 }

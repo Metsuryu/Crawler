@@ -77,8 +77,10 @@ Score table
     <th>Comment</th>
     <th>Score</th>
 
-<!--TODO: sorting and limit number of entries per page-->
+<!--TODO: sorting dynamically and limit number of entries per page
 <tr class="entry" data-ng-repeat="entry in entrylist track by $index" data-ng-click="testID($event)" id="{{entry.id}}">
+-->
+<tr class="entry" data-ng-repeat="entry in entrylist | orderBy:'-score'">
 <td> {{entry.name}} </td> <td> {{entry.comm}} </td> <td> {{entry.score}} </td>
 </tr>
 
