@@ -7,8 +7,6 @@ let counter = 0;
 const bottomLinePosY = canvasY-(scl*2);
 let currentPos = {x: 0, y: 0};
 let lastPos;
-let limitX = canvasX - scl;
-let limitY = canvasY - (scl*3);
 function Crawler() {
   this.x = startingX;
   this.y = startingY;
@@ -44,14 +42,9 @@ function Crawler() {
       };
       let pos = this.tail[i];
       let d = dist(this.x, this.y, pos.x, pos.y);
-      //If touching tail
       if (d < scl) {
         gameOver = true;
       };
-    };
-    //Hit a wall
-    if (this.y === -1 || this.y === (limitY+1) || this.x === -1 || this.x === (limitX+1) ) {
-        gameOver = true;
     };
   }
 
@@ -66,9 +59,8 @@ function Crawler() {
     this.x = this.x + this.xspeed * scl;
     this.y = this.y + this.yspeed * scl;
 
-    //Make constraints -1 and +1 of the limits to avoid death when being near the walls without touching them.
-    this.x = constrain(this.x, -1, (limitX+1) );
-    this.y = constrain(this.y, -1, (limitY+1) );//*3 to constrain the crawler above the line
+    this.x = constrain(this.x, 0, width - scl);
+    this.y = constrain(this.y, 0, height - (scl*3) );//*3 to constrain the crawler above the line
 
     currentPos = {x: this.x, y: this.y}
   }
