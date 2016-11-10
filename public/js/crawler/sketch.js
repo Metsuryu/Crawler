@@ -60,7 +60,7 @@ const UpDir =     {x:0, y:-cSpd};
 const DownDir =   {x:0, y:cSpd};
 const RightDir =  {x:cSpd, y:0};
 const LeftDir =   {x:-cSpd,y:0};
-let currenetDir = {x:0, y:0};
+let currentDir = {x:0, y:0};
 
 //Buttons positions
 let endTX = 240; //Changes depending on victory or game over
@@ -549,12 +549,14 @@ function restartgame(){
   s.total = 0;
   s.tail = [];
   score = 0;
-  win = false;
   started = false;
+  win = false;
   gameOver = false;
   s.x = startingX;
   s.y = startingY;
-  currenetDir = {x:0, y:0};
+  currentDir = {x:0, y:0};
+  currentPos = {x: 0, y: 0};
+  lastPos = currentPos;
   s.xspeed = 0;
   s.yspeed = 0;
   red = 69;
@@ -797,35 +799,35 @@ function keyPressed() {
   }else{
     switch(keyCode) {
       case UP_ARROW:
-      if (currenetDir === DownDir) {
+      if (currentDir === DownDir) {
       }else{
         lastPos = currentPos;
         s.dir(UpDir);
-        currenetDir = UpDir;
+        currentDir = UpDir;
       }
       break;
       case DOWN_ARROW:
-      if (currenetDir === UpDir) {
+      if (currentDir === UpDir) {
       }else{
         lastPos = currentPos;
         s.dir(DownDir);
-        currenetDir = DownDir;
+        currentDir = DownDir;
       }
       break;
       case RIGHT_ARROW:
-      if (currenetDir === LeftDir) {
+      if (currentDir === LeftDir) {
       }else{
         lastPos = currentPos;
         s.dir(RightDir);
-        currenetDir = RightDir;
+        currentDir = RightDir;
       }
       break;
       case LEFT_ARROW:
-      if (currenetDir === RightDir) {
+      if (currentDir === RightDir) {
       }else{
         lastPos = currentPos;
         s.dir(LeftDir);
-        currenetDir = LeftDir;
+        currentDir = LeftDir;
       }
       break;
       default:

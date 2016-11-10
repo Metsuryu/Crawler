@@ -6,6 +6,7 @@ let playing = false;
 let inCinemaMode = false;
 let scoreSubmitted = false;
 let highscoresVisible = false;
+let highscoreArray;
 
 //Removes potential characters that might break the page. Also done server-side.
 function sanitizeString(str){
@@ -25,6 +26,7 @@ function showMessage(msgType, info){
   $(".messageBox").css("visibility", "visible");
   $("#messageBox").append(infoMsg);
 };
+
 
 function confirmBox(msgType, info,yes,no){
   /*Type can be same as showMessage*/
@@ -46,7 +48,7 @@ function confirmBox(msgType, info,yes,no){
 function emptyFields(){
   $("#username").val("");
   $("#comment").val("");
-  $("#score").val("");
+  $("#score").val(0);
 };
 
 function updateEntry(name,lname,score){
@@ -59,6 +61,7 @@ app.controller("ctrl", function($scope, $http) {
   //Get the database entries form the server
   $http.get("/entries").then(function (response) {
     $scope.entrylist = response.data;
+    highscoreArray = $scope.entrylist;
     });
 
 /*
@@ -108,7 +111,6 @@ $(document).ready(function() {
 $("#sketch-holder").click(function(){
   if (!playing) {
     $( "body" ).addClass( "stop-scrolling" );
-    //$(".controls").css({"visibility":"hidden","display":"block"});
     if (!highscoresVisible) {
       $("#scoreTable").css({"visibility":"hidden","display":"block"});
     };
@@ -123,11 +125,10 @@ $("#sketch-holder").click(function(){
       if (!highscoresVisible) {
         $("#scoreTable").css({"visibility":"hidden","display":"none"});
       };
-      //$("#scoreTable").css({"visibility":"hidden","display":"block"});
-      //$(".controls").css({"visibility":"visible","display":"block"});
       playing = false;
     }else if(mouseOverPlayAgain){
       //Play again
+      emptyFields();
       //If win or lose, and play again is clicked, stay in cinematic mode.
       //Return in cinema mode if it was off
       if (!inCinemaMode) {
@@ -194,7 +195,7 @@ $("#sketch-holder").click(function(){
     }
   });
 
-  //Add TODO: after the score is added, show the page it is on (if there is more than one page in the db) and maybe highlight it.
+  //Add
   $("#addBTN").click(function(b){
   	b.preventDefault();
     //Get input
@@ -206,13 +207,24 @@ $("#sketch-holder").click(function(){
     commentVal = sanitizeString(commentVal);
     scoreVal = sanitizeString(scoreVal);
     //Check if there is name and score, comment is optional.
-    if (!usernameVal || !scoreVal) {
+    if (!usernameVal) {
       //No name
       showMessage("alert","You must enter a name.");      
-      return
-    }
-    //TODO: If there is already an entry with the same values, give an error and return.
-    //TODO: If it hs same values but different score, update score if it's higher
+      return;
+    };
+    //If there is already an entry with the same name and score
+    for (let i = 0; i < highscoreArray.length; i++) {
+      if (usernameVal === highscoreArray[i].name && parseInt(scoreVal) <= parseInt(highscoreArray[i].score) ) {
+        showMessage("alert warning","This name already achieved an equal or better score.<br>Pick another name, or get a better score.")
+        return;
+      };
+      //TODO: If it hs same name but higher score, update score if it's higher
+      if (usernameVal === highscoreArray[i].name && parseInt(scoreVal) > parseInt(highscoreArray[i].score) ) {
+        //TODO: Call update function.
+        showMessage("alert info","Highscore updated.")
+        return;
+      };
+    };
     //Make a table entry with data
     let tableEntry = "<tr class=\"entry\" id=\"0\"><td>" + usernameVal + "</td><td>" + commentVal + "</td><td>" + scoreVal + "</td></tr>";
     
