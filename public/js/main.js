@@ -8,6 +8,15 @@ let scoreSubmitted = false;
 let highscoresVisible = false;
 let highscoreArray;
 
+
+/* To detect window size TODO: Use this to determine whether to disable the game or not.
+function windowsSize() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    console.log( "Width: " + w + " Height: " + h);
+}
+*/
+
 //Removes potential characters that might break the page. Also done server-side.
 function sanitizeString(str){
   str = str.replace(/([/\\<>"'])+/g,"");

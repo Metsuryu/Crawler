@@ -1,13 +1,11 @@
 .messageBox {
     padding: 20px;
-    background-color: rgba(192,192,192,0.5);
     color: black;
     margin-bottom: 15px;
     width: 200px;
     visibility: hidden;
     position: relative;
 }
-
 
 /* Message box */
 .alert {
@@ -110,21 +108,6 @@ body{
 }
 
 .selected {outline: thin solid black;}
-
-#footerBar{
-    background-color: #3b6999;
-    margin-top: 200%;
-    bottom: 0;
-    width: 100%;
-    position: absolute;
-    color: white;
-    text-align: right;
-
-}
-
-#about:hover{
-    cursor: pointer;
-}
 
 html{
     position: relative;

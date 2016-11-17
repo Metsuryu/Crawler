@@ -19,6 +19,7 @@ Possible things to implement in the future:
 
 Rest of the site TODOs:
 
+- If the window is under a certain size (that would make the game not fit within), show error message instead of game window, at least until mobile version is done.
 - When a score is added, and the database is full, the lowest or if equal oldest score is removed to make room.
 	If the name is the same and the score is higher, update the score and comment. If the score is lower, require other name.
 - Limit number of results per page to 15(?) with Angular 
