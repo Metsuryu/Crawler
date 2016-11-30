@@ -13,7 +13,7 @@ app.engine('html', require('ejs').__express);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 //const jsonParser = bodyParser.json();
 const port = process.env.port || 3000;
-const limitOfResults = 15;
+const limitOfResults = 10; //Max number of results displayed per page, must be equal to resultsPerPage in main.js
 
 function sanitizeString(str){
   str = str.replace(/([/\\<>"'])+/g,"");
@@ -26,7 +26,6 @@ function sanitizeString(str){
 
 // Mongoose connection to MongoDB
 mongoose.connect('mongodb://localhost/test');  //For local testing
-
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -45,45 +44,53 @@ let Entry = mongoose.model('Entry', entrySchema);
 
 //Routes
 app.get("/",function(req, res){
-  /* For JQuery, now replaced with Angular
-  let items = [];
-  Entry.find(function(err, entries) {
-    if(err) return console.error(err);
-    for (let entry of entries){
-      items += "<tr class=\"entry\" id=\""+ entry.id +"\" ><td>" + entry.name + "</td><td>" + entry.comm + "</td><td>" + entry.score + "</td></tr>";
-    };
-    for (let entry of entries){
-      items += entry.id + entry.name + entry.comm + entry.score;
-    };
-    */
     res.render('index'); 
   }); 
-//});
 
 app.get("/entries",function(req, res){
   let items = [];
-  Entry.find(function(err, entries) {
-    if(err) return console.error(err);
-    //TODO: Only show x entries per page. Have multiple pages generated procedurally.
-    /* //This works with ejs <%- entrylist%> without AngularJS.
-    for (let entry of entries){
-      items += "<tr class=\"entry\" id=\""+ entry.id +"\" ><td>" + entry.name + "</td><td>" + entry.comm + "</td><td>" + entry.score + "</td></tr>";
+  let pageToDisplay = req.query.pageToDisplay;
+  let skipEntries = 0;
+  if (pageToDisplay > 1) {
+    skipEntries = (pageToDisplay*limitOfResults) - limitOfResults;
+  };
+
+  Entry.count(function (err, dbSize) {
+    //If there are more entries than the limit, show the buttons for successive pages
+    if (dbSize >= limitOfResults) {
+      Entry.find(function(err, entries) {
+        if(err) return console.error(err);
+        //JSON for Angular ng-repeat
+        entries.forEach(function (entry, i) {
+          items.push({
+            id: entry.id,
+            name: entry.name,
+            comm: entry.comm,
+            score: entry.score,
+            dbsize: dbSize //TODO: Optimize. See if I can send this to the client only once, instead of sending it with every item.
+          });
+        });
+
+        res.json( items );
+      }).sort( { score: -1 } ).limit( limitOfResults ).skip(skipEntries); 
+    }else{
+      //Otherwise, just display all the results
+      Entry.find(function(err, entries) {
+        if(err) return console.error(err);
+        //JSON for Angular ng-repeat
+        entries.forEach(function (entry, i) {
+          items.push({
+            id: entry.id,
+            name: entry.name,
+            comm: entry.comm,
+            score: entry.score,
+          });
+        });
+        res.json( items );
+      }).sort( { score: -1 } ); 
     };
-    */
-    //JSON for Angular ng-repeat
-    entries.forEach(function (entry, i) {
-      items.push({
-        id: entry.id,
-        name: entry.name,
-        comm: entry.comm,
-        score: entry.score,
-      });
-    });
-    res.json( items );
-  }); 
+  });
 });
-
-
 
 
 app.post("/addentry", urlencodedParser , function(req, res){
@@ -100,7 +107,8 @@ app.post("/addentry", urlencodedParser , function(req, res){
   res.end();
 });
 
-//No longer needed. Just keeping these for demonstration
+//TODO: Use these for updating a score, and deleting the lowest 
+//score when a new high one is added, and there is no more space.
 /*
 app.put("/updateentry", urlencodedParser, function(req,res){
   let entryid = req.body.entryId;

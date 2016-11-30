@@ -7,6 +7,9 @@ let inCinemaMode = false;
 let scoreSubmitted = false;
 let highscoresVisible = false;
 let highscoreArray;
+let clickedPage = 1;
+let dbSize = 0;
+const resultsPerPage = 10; //Must be equal to limitOfResults in app.js
 
 
 /* To detect window size TODO: Use this to determine whether to disable the game or not.
@@ -65,13 +68,48 @@ function updateEntry(name,lname,score){
   entryToUpdate.innerHTML = "<tr class=\"entry\" id=\"0\"><td>" + name + "</td><td>" + lname + "</td><td>" + score + "</td></tr>";
 }
 
+function generatePageButtons(databaseSize){
+  let pages = Math.ceil( databaseSize / resultsPerPage );
+  for (let i = 1; i <= pages; i++) {
+    if (i === 1) {
+      $( "#scorePages" ).append( "  <div class=\"scorePageButton Current\">1</div>  " );
+    }else{
+      $( "#scorePages" ).append( "  <div class=\"scorePageButton\">"+i+"</div>  " );
+    };
+  };
+}
+
 let app = angular.module("Crawler", []);
 app.controller("ctrl", function($scope, $http) {
   //Get the database entries form the server
-  $http.get("/entries").then(function (response) {
+  $http({
+    url: "/entries", 
+    method: "GET",
+    params: {pageToDisplay: clickedPage}
+ }).then(function (response) {
     $scope.entrylist = response.data;
     highscoreArray = $scope.entrylist;
+    if (highscoreArray[0].dbsize) {
+      dbSize = highscoreArray[0].dbsize;
+    };
+    generatePageButtons(dbSize);
+  });
+
+
+ $("#scorePages").on("click", ".scorePageButton", function(){
+  $(".scorePageButton").removeClass("Current");
+  $(this).addClass("Current");
+  var page = $(this).html();
+  clickedPage = page;
+  $http({
+    url: "/entries", 
+    method: "GET",
+    params: {pageToDisplay: clickedPage}
+    }).then(function (response) {
+      $scope.entrylist = response.data;
+      highscoreArray = $scope.entrylist;
     });
+});
 
 /*
   //Get id of clicked entry TODO: comment out for now, no longer necessary.
@@ -116,6 +154,7 @@ $(document).ready(function() {
     currentAge = document.getElementById("score").value;
   });
   */
+
 
 $("#sketch-holder").click(function(){
   if (!playing) {

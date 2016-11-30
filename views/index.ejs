@@ -29,7 +29,6 @@
   <h1 id="titleH1" align="center" style="font-family: Times">Crawler</h1>
   <hr>
 
-
 <!--
 Controls 
 TODO:Modify automatically entries with the same name if the score is higher than the previous one, otherwise tell user to choose another name.
@@ -53,9 +52,6 @@ TODO:Modify automatically entries with the same name if the score is higher than
 <button class="btn btn-primary" id="aboutGame" name="aboutGameBTN">About the game</button>
 <br><br>
 
-
-
-
 <button class="btn btn-primary" id="showHS" name="showHSBTN">Show Highscores</button>
 <br>
 <div class="messageBox">
@@ -71,9 +67,7 @@ TODO:Modify automatically entries with the same name if the score is higher than
 </center>
 
 
-<!--
-Score table
--->
+<!--Score table-->
 <div id="scoreTable">
 <h1 align="center" style="font-family: Times">Highscores</h1>
 <br>
@@ -85,14 +79,17 @@ Score table
     <th>Comment</th>
     <th>Score</th>
 
-<!--TODO: sorting dynamically and limit number of entries per page
-<tr class="entry" data-ng-repeat="entry in entrylist track by $index" data-ng-click="testID($event)" id="{{entry.id}}">
--->
-<tr class="entry" data-ng-repeat="entry in entrylist | orderBy:'-score'">
+<!--Sort dynamically and limit number of entries per page, sorted server-side-->
+<tr class="entry" data-ng-repeat="entry in entrylist">
 <td> {{entry.name}} </td> <td> {{entry.comm}} </td> <td> {{entry.score}} </td>
 </tr>
 
 </table>
+
+<div id="scorePages">
+<!--Buttons to other pages of the highscore added dynamically-->
+</div>
+
 </center>
 </div>
 

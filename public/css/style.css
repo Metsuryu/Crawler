@@ -150,7 +150,7 @@ html{
     width: 600px;
 }
 
-#scoreTable{
+#scoreTable {
     /*TODO: Make it so the scores only show after the game, and they don't take space during.*/
     display: none;
     visibility: visible;
@@ -163,10 +163,37 @@ html{
     
 }
 
-#titleH1{
+#titleH1 {
     /*TODO: replace with logo when ready*/
     background-color: #3b6999;
     top: 0;
     margin-top: 0;
     color: white;
+}
+
+.scorePageButton {
+    background-color: white;
+    color: #3b6999;
+    margin-bottom: 1em;
+    font-weight: bold;
+    display: inline-block;
+    width: 1.4em;
+    border: 1px solid #3b6999;
+}
+
+.scorePageButton:hover {
+    background-color: #3b6999;
+    color: white;
+    cursor: pointer;
+}
+
+.scorePageButton.Current {
+    color: black;
+    cursor: default;
+}
+
+.scorePageButton.Current:hover {
+    background-color: white;
+    color: black;
+    cursor: default;
 }
