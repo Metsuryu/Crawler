@@ -1,5 +1,7 @@
 # Crawler
-A snake clone and MEAN stack demonstration
+A snake clone.
+
+I made the site mainly to demonstrate the technologies of the MEAN stack, the game was made later to give it some purpose.
 
 You can play the game at http://crawler.cloudno.de/
 
@@ -13,8 +15,6 @@ Crawler TODOs:
 Rest of the site TODOs:
 
 - If the window is under a certain size (that would make the game not fit within), show error message instead of game window.
-- When a score is added, and the database is full, the lowest or if equal oldest score is removed to make room.
-	If the name is the same and the score is higher, update the score and comment. If the score is lower, require other name.
 - Add a search function for the highscores
 - Add special commands in search function (sorting, filters, advanced search...)
 - Add autocomplete to search with regex. When writing, change in real time the name of a variable 

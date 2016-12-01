@@ -94,7 +94,6 @@ app.get("/entries",function(req, res){
 
 
 app.post("/addentry", urlencodedParser , function(req, res){
-  //TODO: Make sure values are not empty, except for comment
   //Get new data and save it to db
   let nameVal = sanitizeString(req.body.username);
   let commVal = sanitizeString(req.body.comment);
@@ -107,9 +106,6 @@ app.post("/addentry", urlencodedParser , function(req, res){
   res.end();
 });
 
-//TODO: Use these for updating a score, and deleting the lowest 
-//score when a new high one is added, and there is no more space.
-/*
 app.put("/updateentry", urlencodedParser, function(req,res){
   let entryid = req.body.entryId;
   let nameVal = sanitizeString(req.body.username);
@@ -126,23 +122,10 @@ app.put("/updateentry", urlencodedParser, function(req,res){
   res.end();
 });
 
-app.delete("/deleteentry", urlencodedParser, function(req, res) {
-  let entryid = req.body.entryId;
-  Entry.remove({_id: entryid}, function(err, result) {
-    if (err) {console.log(err);}
-    //db.close(); //Do not close the db or the site will not work.
-    });
-  res.send("");
-  res.end();
-});
-*/
-
-
 //Google verification
 app.get("/google792be884c8fe585c.html",function(req, res){
     res.render( "google792be884c8fe585c.html" );
 });
-
 
 //404 Route (Keep this as the last route)
 app.get('*', function(req, res){

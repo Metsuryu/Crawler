@@ -1,7 +1,3 @@
-let selectedElementId = "";
-let currentUN = "";
-let currentCM = "";
-let currentAge = "";
 let playing = false;
 let inCinemaMode = false;
 let scoreSubmitted = false;
@@ -10,7 +6,8 @@ let highscoreArray;
 let clickedPage = 1;
 let dbSize = 0;
 const resultsPerPage = 10; //Must be equal to limitOfResults in app.js
-
+const limitOfDatabase = 100; //Arbitrary low limit to keep it light.
+let dbIsFull = false;
 
 /* To detect window size TODO: Use this to determine whether to disable the game or not.
 function windowsSize() {
@@ -63,10 +60,6 @@ function emptyFields(){
   $("#score").val(0);
 };
 
-function updateEntry(name,lname,score){
-  let entryToUpdate = document.getElementById(selectedElementId);
-  entryToUpdate.innerHTML = "<tr class=\"entry\" id=\"0\"><td>" + name + "</td><td>" + lname + "</td><td>" + score + "</td></tr>";
-}
 
 function generatePageButtons(databaseSize){
   let pages = Math.ceil( databaseSize / resultsPerPage );
@@ -91,6 +84,9 @@ app.controller("ctrl", function($scope, $http) {
     highscoreArray = $scope.entrylist;
     if (highscoreArray[0].dbsize) {
       dbSize = highscoreArray[0].dbsize;
+      if (dbSize >= limitOfDatabase) {
+        dbIsFull = true;
+      };
     };
     generatePageButtons(dbSize);
   });
@@ -109,52 +105,11 @@ app.controller("ctrl", function($scope, $http) {
       $scope.entrylist = response.data;
       highscoreArray = $scope.entrylist;
     });
-});
-
-/*
-  //Get id of clicked entry TODO: comment out for now, no longer necessary.
-  //Puts entry's data into text fields
-  $scope.testID = function (event) {
-    let thisE = event.currentTarget;
-    let thisId = thisE.attributes.id.value;
-
-    selectedElementId = thisId;
-    if (thisId === 0 || thisId === null || thisId === ""){
-      return;
-    };
-    $("#entriesTable tr").removeClass("selected");
-    $(thisE).addClass( "selected" );
-    $("#username").val( sanitizeString(thisE.cells[0].innerHTML) );
-    $("#comment").val( sanitizeString(thisE.cells[1].innerHTML) );
-    $("#score").val( parseInt( thisE.cells[2].innerHTML ) );
-    currentUN = sanitizeString( document.getElementById("username").value );
-    currentCM = sanitizeString( document.getElementById("comment").value );
-    currentAge = parseInt( document.getElementById("score").value );
-    };
-*/
-
+  });
 });
 
 
 $(document).ready(function() {
-
-  //Gets id of clicked entry  
-  //Puts entry's data into text fields
-  /*Replaced with Angular. Also removed angular version.
-  $(".entry").click(function(event){
-    selectedElementId = this.id;
-    if (this.id === 0 || this.id === null || this.id === "") {return;};
-    $("#entriesTable tr").removeClass("selected");
-    $(this).addClass( "selected" );
-    $("#username").val(this.cells[0].innerHTML);
-    $("#comment").val(this.cells[1].innerHTML);
-    $("#score").val(this.cells[2].innerHTML);
-    currentUN = document.getElementById("username").value;
-    currentCM = document.getElementById("comment").value;
-    currentAge = document.getElementById("score").value;
-  });
-  */
-
 
 $("#sketch-holder").click(function(){
   if (!playing) {
@@ -219,7 +174,7 @@ $("#sketch-holder").click(function(){
      that at the end lets you send your score to a database.");
   });
 
-  //About the game //TODO: Not sure about the stars
+  //About the game
   $("#aboutGame").click(function(){
     showMessage("alert info","\
       <span style=\"color: black;\">★</span>Use the arrow keys to move<br>\
@@ -243,7 +198,46 @@ $("#sketch-holder").click(function(){
     }
   });
 
-  //Add
+
+  function updateScore(nameVal,commentVal,scoreVal,idToModify,dbfull){
+    let warningMessage = "There is already a highscore with the same name, this will update the score. Continue?";
+    if (dbfull) {
+      warningMessage = "Since the database is full, submitting this score will remove the lowest existing highscore to make room. Continue?";
+    };
+
+    confirmBox("alert warning",warningMessage,
+      function yes(){
+        $.ajax({
+          type: "PUT",
+          url: "/updateentry",
+          data: {
+            entryId: idToModify,
+            username: nameVal, 
+            comment: commentVal, 
+            score: scoreVal
+          },
+          success: function() {
+            showMessage("alert info","Highscore updated.")
+            emptyFields();
+          },
+          error: function(err){
+            //console.log("Error: " , err);
+            showMessage("alert","An error has occurred.");
+          },
+          complete: function(){
+          }
+        });        
+      },
+      function no(){
+        return;
+      });
+  }
+
+function getLowestScore(){
+
+}
+
+  //Submit Score
   $("#addBTN").click(function(b){
   	b.preventDefault();
     //Get input
@@ -254,25 +248,44 @@ $("#sketch-holder").click(function(){
     usernameVal = sanitizeString(usernameVal);
     commentVal = sanitizeString(commentVal);
     scoreVal = sanitizeString(scoreVal);
-    //Check if there is name and score, comment is optional.
+    //Check if there is name, comment is optional, score should always be there.
     if (!usernameVal) {
       //No name
       showMessage("alert","You must enter a name.");      
       return;
     };
+
     //If there is already an entry with the same name and score
     for (let i = 0; i < highscoreArray.length; i++) {
       if (usernameVal === highscoreArray[i].name && parseInt(scoreVal) <= parseInt(highscoreArray[i].score) ) {
         showMessage("alert warning","This name already achieved an equal or better score.<br>Pick another name, or get a better score.")
         return;
       };
-      //TODO: If it hs same name but higher score, update score if it's higher
+      //If it has same name but higher score, update score if it's higher
       if (usernameVal === highscoreArray[i].name && parseInt(scoreVal) > parseInt(highscoreArray[i].score) ) {
-        //TODO: Call update function.
-        showMessage("alert info","Highscore updated.")
+        let idToChange = highscoreArray[i].id;
+        updateScore(usernameVal,commentVal,scoreVal,idToChange,dbIsFull);
         return;
       };
     };
+
+    //If the database is full, remove lowest score to make room for new one, by updating the old score with the new values
+    if (dbIsFull) {
+      if (highscoreArray[0].score >= 0) {
+        let lowestScore = highscoreArray[0].score;
+        let lowestScoreId = highscoreArray[0].id;
+
+        for (let i = highscoreArray.length - 1; i >= 0; i--) {
+          if (highscoreArray[i].score < lowestScore) {
+            lowestScore = highscoreArray[i].score;
+            lowestScoreId = highscoreArray[i].id;
+          };
+          updateScore(usernameVal,commentVal,scoreVal,lowestScoreId,dbIsFull);
+          return;
+        };
+      };
+    };
+
     //Make a table entry with data
     let tableEntry = "<tr class=\"entry\" id=\"0\"><td>" + usernameVal + "</td><td>" + commentVal + "</td><td>" + scoreVal + "</td></tr>";
     
@@ -297,121 +310,9 @@ $("#sketch-holder").click(function(){
         showMessage("alert","An error has occurred.");
       },
       complete: function(){
-        //TODO: check if everything is ok.
       }
     });
   });
-
-//Modify TODO: Make it so this is called when only the score of an entry needs to be updated. 
-//TODO: Restructure the entire function accordingly
-//If a entry is selected automatically change forms to entry's values, 
-//When clicking modify use new values that are in forms to modify it.
-//If not, tell user to fill the forms.
-/*
-$("#modifyBTN").click(function(b){
-    b.preventDefault();
-    if (!selectedElementId) {
-      showMessage("alert","You must click on the entry you want to modify.");
-      return
-    };
-    //Get input
-    let usernameVal = $("#username").val();
-    let commentVal = $("#comment").val();
-    let scoreVal = $("#score").val();
-    //Sanitize it
-    usernameVal = sanitizeString(usernameVal);
-    commentVal = sanitizeString(commentVal);
-    scoreVal = sanitizeString(scoreVal);
-    //Check if there is any data
-    if (!usernameVal || !commentVal || !scoreVal) {
-      //No data
-      showMessage("alert","You must fill every field.");      
-      return
-    }
-    //If the new data is the same as the old data, give an error and return.
-    if (usernameVal === currentUN && commentVal === currentCM && parseInt(scoreVal) === parseInt(currentAge) ) {
-      showMessage("alert","You must change at least one field if you want to modify an entry.");   
-      return
-    }
-
-    confirmBox("alert warning","Modify permanently selected entry?",
-      function yes(){
-
-        $.ajax({
-          type: "PUT",
-          url: "/updateentry",
-          data: {
-            entryId: selectedElementId,
-            username: usernameVal, 
-            comment: commentVal, 
-            score: scoreVal
-          },
-          success: function() {
-            showMessage("alert info", "Selected entry was modified");
-            //Update Table:
-            updateEntry(usernameVal,commentVal,scoreVal);
-            $("#entriesTable tr").removeClass("selected");
-            selectedElementId = "";
-            currentUN = "";
-            currentCM = "";
-            currentAge = "";
-            emptyFields();
-          },
-          error: function(err){
-            //console.log("Error: " , err);
-            showMessage("alert","An error has occurred.");
-          },
-          complete: function(){
-            }
-          });
-        
-        },
-      function no(){
-        return;
-      });
-  });
-
-//Delete TODO: Make it so this is called when the database is full, and a new entry needs to be added, so it removes the lowest score
-//to make space for the new one, higher one.
-//If a entry is selected, ask for confirm, and delete it, if not, tell user to select an entry.
-$("#deleteBTN").click(function(b){
-    b.preventDefault();
-
-    if (!selectedElementId) {
-      showMessage("alert","You must click on the entry you want to delete.");
-      return
-    };
-
-    //Confirm deletion
-    confirmBox("alert warning","Delete permanently selected entry?",
-      function yes (){
-        //If Yes is clicked, the entry gets deleted
-        $.ajax({
-          type: "DELETE",
-          url: "/deleteentry",
-          data: { entryId: selectedElementId
-          },
-          success: function(){
-            showMessage("alert info", "Selected entry was deleted");
-            //Update Table:
-            $("#"+selectedElementId).remove();
-          },
-          error: function(err){
-            //console.log("Error: " , err);
-            showMessage("alert","An error has occurred.");
-          },
-          complete: function(){
-            selectedElementId = "";
-            emptyFields();
-          }
-        });
-      },
-      function no (){
-        return;
-      });
-  });
-
-  */
 
   //Close All
   $("#closeAll").click(function(b){
