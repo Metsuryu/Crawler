@@ -14,7 +14,6 @@ Crawler TODOs:
 
 Rest of the site TODOs:
 
-- If the window is under a certain size (that would make the game not fit within), show error message instead of game window.
 - Add a search function for the highscores
 - Add special commands in search function (sorting, filters, advanced search...)
 - Add autocomplete to search with regex. When writing, change in real time the name of a variable 

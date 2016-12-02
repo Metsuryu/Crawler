@@ -8,20 +8,18 @@ let dbSize = 0;
 const resultsPerPage = 10; //Must be equal to limitOfResults in app.js
 const limitOfDatabase = 100; //Arbitrary low limit to keep it light.
 let dbIsFull = false;
-
-/* To detect window size TODO: Use this to determine whether to disable the game or not.
-function windowsSize() {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    console.log( "Width: " + w + " Height: " + h);
-}
-*/
+const minWidth = 1076;
+const minHeight = 685;
+const canvasWH = 600;
+let screenTooSmall = false;
+let windowW = 0;
+let windowH = 0;
 
 //Removes potential characters that might break the page. Also done server-side.
 function sanitizeString(str){
   str = str.replace(/([/\\<>"'])+/g,"");
   return str.trim();
-  };
+};
 
 function showMessage(msgType, info){
   /*msgType can be: 
@@ -47,11 +45,11 @@ function confirmBox(msgType, info,yes,no){
   $("#BTNyes").click(function(){
     yes();
     $(this.parentElement).remove();
-    });
+  });
   $("#BTNno").click(function(){
     no();
     $(this.parentElement).remove();
-    });
+  });
 };
 
 function emptyFields(){
@@ -79,7 +77,7 @@ app.controller("ctrl", function($scope, $http) {
     url: "/entries", 
     method: "GET",
     params: {pageToDisplay: clickedPage}
- }).then(function (response) {
+  }).then(function (response) {
     $scope.entrylist = response.data;
     highscoreArray = $scope.entrylist;
     if (highscoreArray[0].dbsize) {
@@ -92,15 +90,15 @@ app.controller("ctrl", function($scope, $http) {
   });
 
 
- $("#scorePages").on("click", ".scorePageButton", function(){
-  $(".scorePageButton").removeClass("Current");
-  $(this).addClass("Current");
-  var page = $(this).html();
-  clickedPage = page;
-  $http({
-    url: "/entries", 
-    method: "GET",
-    params: {pageToDisplay: clickedPage}
+  $("#scorePages").on("click", ".scorePageButton", function(){
+    $(".scorePageButton").removeClass("Current");
+    $(this).addClass("Current");
+    var page = $(this).html();
+    clickedPage = page;
+    $http({
+      url: "/entries", 
+      method: "GET",
+      params: {pageToDisplay: clickedPage}
     }).then(function (response) {
       $scope.entrylist = response.data;
       highscoreArray = $scope.entrylist;
@@ -110,26 +108,50 @@ app.controller("ctrl", function($scope, $http) {
 
 
 $(document).ready(function() {
+  windowW = window.innerWidth;
+  windowH = window.innerHeight;
 
-$("#sketch-holder").click(function(){
-  if (!playing) {
-    $( "body" ).addClass( "stop-scrolling" );
-    if (!highscoresVisible) {
-      $("#scoreTable").css({"visibility":"hidden","display":"block"});
+  if (windowW < minWidth || windowH < minHeight) {
+    if (windowW < canvasWH || windowH < canvasWH) {
+      //Remove canvas and show error message.
+      $("#sketch-holder").remove();
+      console.log("The browser window is WAY too small. The game window is 600x600. Consider closing the console and reloading.");
+      showMessage("alert","Sorry, your browser window is too small to fit the game window (600x600).\
+        You could try increasing your monitor resolution, making some space in the browser by removing toolbars \
+        or other addons that take space, or just using a larger monitor.");
+    }else{
+      //Fit the game window anyway by moving it top-left
+      console.log("The browser window is too small. Consider closing the console and reloading.");
+      showMessage("alert info","Your browser window is too small to fit the game window normally, so \
+      when you click play, the game window will move to the top-left corner of the screen.");
+      screenTooSmall = true;
     };
-    $('#sketch-holder').cinema();
-    inCinemaMode = true;
-    playing = true;
-  }else{
-    if (!win && !settings && !gameOver) {
-      $('#sketch-holder').uncinema();
-      inCinemaMode = false;
-      $( "body" ).removeClass( "stop-scrolling" );
+  };
+
+  $("#sketch-holder").click(function(){
+    if (!playing) {
+      $( "body" ).addClass( "stop-scrolling" );
       if (!highscoresVisible) {
-        $("#scoreTable").css({"visibility":"hidden","display":"none"});
+        $("#scoreTable").css({"visibility":"hidden","display":"block"});
       };
-      playing = false;
-    }else if(mouseOverPlayAgain){
+      $('#sketch-holder').cinema();
+
+      if (screenTooSmall) {
+        $("#sketch-holder").css({"position":"absolute","top":0});
+      };
+
+      inCinemaMode = true;
+      playing = true;
+    }else{
+      if (!win && !settings && !gameOver) {
+        $('#sketch-holder').uncinema();
+        inCinemaMode = false;
+        $( "body" ).removeClass( "stop-scrolling" );
+        if (!highscoresVisible) {
+          $("#scoreTable").css({"visibility":"hidden","display":"none"});
+        };
+        playing = false;
+      }else if(mouseOverPlayAgain){
       //Play again
       emptyFields();
       //If win or lose, and play again is clicked, stay in cinematic mode.
@@ -233,9 +255,9 @@ $("#sketch-holder").click(function(){
       });
   }
 
-function getLowestScore(){
+  function getLowestScore(){
 
-}
+  }
 
   //Submit Score
   $("#addBTN").click(function(b){

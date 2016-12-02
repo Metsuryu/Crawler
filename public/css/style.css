@@ -88,7 +88,6 @@ tr:nth-child(odd) {
 
 tr:hover {
     background-color: #f7f7f7;
-    /*cursor: pointer; No longer clickable.*/
 }
 
 body{
@@ -139,28 +138,19 @@ html{
 }
 
 .stop-scrolling {
-    position: fixed; 
-    overflow-y: scroll;
+    position: fixed;
 }
 
 #sketch-holder {
     /*Should be same size as Canvas.*/
-    background-color: #323232;
+    /*background-color: #323232; Keeping it white, since it causes problems on smaller screens otherwise.*/
     height: 600px;
     width: 600px;
 }
 
 #scoreTable {
-    /*TODO: Make it so the scores only show after the game, and they don't take space during.*/
     display: none;
     visibility: visible;
-    /*position: absolute;
-    top: 0px;
-    left:0px;
-    /*
-    display: block; //none
-    visibility: hidden;*/
-    
 }
 
 #titleH1 {
