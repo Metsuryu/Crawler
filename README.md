@@ -21,5 +21,4 @@ Rest of the site TODOs:
 	and show 4 or 5 of the matching results under the text-box
 	the user can select/click the suggestion to autocomplete, and it will search automatically.
 - Make a mobile view (detect if user is on mobile, and give them that view instead of standard one.)
-- Make the page work well for different screen sizes and when resizing
 - Order and clean up everything

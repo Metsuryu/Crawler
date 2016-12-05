@@ -321,11 +321,12 @@ $(document).ready(function() {
       },
       success: function() {
         showMessage("alert info","The score was submitted.");
-        //Update Table:
-        $('#entriesTable tr:last').after(tableEntry);
         emptyFields();
         $("#addBTN").prop("disabled", true);
         scoreSubmitted = true;
+        dbSize += 1;
+        //Update Table:
+        $('#entriesTable tr:last').after(tableEntry);
       },
       error: function(err){
         //console.log("Error: " , err);
