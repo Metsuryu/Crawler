@@ -1,13 +1,10 @@
 /*
-Crawler - A snake clone by Mario Cannistrà based on the code by Daniel Shiffman 
-at https://github.com/CodingRainbow/Rainbow-Code/tree/master/challenges/CC_03_Snake_game_p5.js
-taken from his video: https://www.youtube.com/watch?v=AaGK-fj-BAM
+Crawler - A snake clone by Mario Cannistrà
 
 TODO: Use my own music
 Music file name: FDS_rushjet1_-_fdx
 It was a demo song I found inside the FamiTracker folder
 
-I continued to write on top of that code by adding more functionality and making the game in the current state.
 My github: https://github.com/Metsuryu
 */
 

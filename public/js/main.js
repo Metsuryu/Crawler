@@ -128,6 +128,7 @@ $(document).ready(function() {
     };
   };
 
+
   $("#sketch-holder").click(function(){
     if (!playing) {
       $( "body" ).addClass( "stop-scrolling" );
@@ -210,10 +211,16 @@ $(document).ready(function() {
   //Show Highscores Button
   $("#showHS").click(function(){
     if (!highscoresVisible) {
+      if (screenTooSmall) {
+        $("#sketch-holder").css({"visibility":"hidden"})
+      };
       $("#scoreTable").css({"visibility":"visible","display":"block"});
       $("#showHS").html("Hide Highscores");
       highscoresVisible = true;
     }else{
+      if (screenTooSmall) {
+        $("#sketch-holder").css({"visibility":"visible"})
+      };
       $("#scoreTable").css({"visibility":"hidden","display":"none"});
       $("#showHS").html("Show Highscores");
       highscoresVisible = false;    

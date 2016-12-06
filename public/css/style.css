@@ -187,3 +187,8 @@ html{
     color: black;
     cursor: default;
 }
+
+#searchField {
+    color: black;
+    max-width: 7em;
+}

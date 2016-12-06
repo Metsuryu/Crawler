@@ -72,12 +72,12 @@
 <center>
 <table id="entriesTable">
   <tr>
-    <th>Username</th>
+    <th>Username  <input id="searchField" type="text" name="searchTable" placeholder="&#128269; Search" data-ng-model="searchNG">  </th>
     <th>Comment</th>
-    <th>Score</th>
+    <th>Score </th>
 
 <!--Sort dynamically and limit number of entries per page, sorted server-side-->
-<tr class="entry" data-ng-repeat="entry in entrylist">
+<tr class="entry" data-ng-repeat="entry in entrylist | filter:searchNG">
 <td> {{entry.name}} </td> <td> {{entry.comm}} </td> <td> {{entry.score}} </td>
 </tr>
 
