@@ -1,11 +1,11 @@
 /*
 Crawler - A snake clone by Mario Cannistrà
-
-TODO: Use my own music
-Music file name: FDS_rushjet1_-_fdx
-It was a demo song I found inside the FamiTracker folder
-
 My github: https://github.com/Metsuryu
+
+#####
+The logo was made by Chiara Cannistrà - Clanny
+Facebook: www.facebook.com/clanny.official
+#####
 */
 
 const canvasX = 600;
@@ -162,7 +162,7 @@ function preload() {
   eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music //TODO: Change BGM to my own
-  BGM = loadSound("audio/FDSrushjet1fdx32.mp3");
+  BGM = loadSound("audio/CrawlerTrack.mp3");
   BGM.setVolume(musicVolume);
 }
 

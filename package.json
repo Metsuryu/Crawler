@@ -1,6 +1,6 @@
 {
   "name": "Crawler",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Crawler a snake clone to demonstrate the MEAN stack",
   "main": "index.js",
   "scripts": {

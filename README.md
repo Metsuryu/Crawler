@@ -13,8 +13,7 @@ You can play the game at http://crawler.cloudno.de/
 
 
 Crawler TODOs:
-- Change music to my own when it's ready.
-- Replace title with logo when it's ready.
+
 - Translate to Italian.
 - Clean up code.
 

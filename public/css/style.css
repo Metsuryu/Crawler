@@ -153,12 +153,12 @@ html{
     visibility: visible;
 }
 
-#titleH1 {
-    /*TODO: replace with logo when ready*/
-    background-color: #3b6999;
-    top: 0;
-    margin-top: 0;
-    color: white;
+#titleLogo {
+    display: block;
+    margin: auto;
+    width: 400px;
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 
 .scorePageButton {
