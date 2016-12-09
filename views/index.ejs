@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <!--
 Crawler - A snake clone by Mario Cannistrà
 My github: https://github.com/Metsuryu
@@ -7,8 +9,6 @@ The logo was made by Chiara Cannistrà - Clanny
 Facebook: www.facebook.com/clanny.official
 #####
 -->
-<!DOCTYPE html>
-<html lang="en">
 <head>
 	<title>Crawler</title>
   <!-- Metadata -->
@@ -26,6 +26,7 @@ Facebook: www.facebook.com/clanny.official
   <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
   <script type="text/javascript" src="js/cinema.min.js"></script>
   <script type="text/javascript" src="js/angular.min.js"></script>
+  <script type="text/javascript" src="js/translation.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script src="js/p5/p5.min.js" type="text/javascript"></script>
   <script src="js/p5/p5.dom.min.js" type="text/javascript"></script>
@@ -35,9 +36,9 @@ Facebook: www.facebook.com/clanny.official
   <script src="js/GoogleAnalytics.js" type="text/javascript"></script> 
 </head>
 <body data-ng-app="Crawler" data-ng-controller="ctrl">
-<!--  <h1 id="titleH1" align="center" style="font-family: Times">Crawler</h1> -->
   <img id="titleLogo" src="images/CrawlerLogo/logoTr.png">
 
+<!--TODO: Add buttons to change language somewhere-->
 
 <!-- Controls -->
 <div class="controls">
@@ -49,17 +50,17 @@ Facebook: www.facebook.com/clanny.official
   <b>Score:</b><br>
   <input disabled id="score" type="number" name="score" value=0><br>
   <br>
-  <button class="btn btn-primary" disabled id="addBTN" name="addBTN">Submit Score</button>
+  <button class="btn btn-primary" disabled id="addBTN" name="addBTN">Submit score</button>
 </form> 
 <br>
 
 <button class="btn btn-primary" id="about" name="aboutBTN">About</button>
 <br><br>
 
-<button class="btn btn-primary" id="aboutGame" name="aboutGameBTN">About the game</button>
+<button class="btn btn-primary" id="aboutGame" name="aboutGameBTN">Game guide</button>
 <br><br>
 
-<button class="btn btn-primary" id="showHS" name="showHSBTN">Show Highscores</button>
+<button class="btn btn-primary" id="showHS" name="showHSBTN">Show highscores</button>
 <br>
 <div class="messageBox">
   <span class="closebtn all" id="closeAll">Dismiss all &times;</span><br>
@@ -82,9 +83,9 @@ Facebook: www.facebook.com/clanny.official
 <center>
 <table id="entriesTable">
   <tr>
-    <th>Username  <input id="searchField" type="text" name="searchTable" placeholder="&#128269; Search" data-ng-model="searchNG">  </th>
+    <th>Name <input id="searchField" type="text" name="searchTable" placeholder="&#128269; Search" data-ng-model="searchNG"></th>
     <th>Comment</th>
-    <th>Score </th>
+    <th>Score</th>
 
 <!--Sort dynamically and limit number of entries per page, sorted server-side-->
 <tr class="entry" data-ng-repeat="entry in entrylist | filter:searchNG">

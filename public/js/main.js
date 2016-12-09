@@ -39,7 +39,7 @@ function confirmBox(msgType, info,yes,no){
   /*Type can be same as showMessage*/
   let infoMsg = "<div class=\""+ msgType +"\"><span class=\"closebtn\" \
   onclick=\"this.parentElement.style.display='none';\">&times;</span>"+ info +"\
-  <button id=\"BTNyes\" class=\"button\">Yes</button> <button id=\"BTNno\" class=\"button\">No</button></div>";
+  <button id=\"BTNyes\" class=\"button\">"+yes+"</button> <button id=\"BTNno\" class=\"button\">No</button></div>";
   $(".messageBox").css("visibility", "visible");
   $("#messageBox").append(infoMsg);
   $("#BTNyes").click(function(){
@@ -108,6 +108,9 @@ app.controller("ctrl", function($scope, $http) {
 
 
 $(document).ready(function() {
+  //TODO: Detect browser language, and call function if italian
+  //toItalian();
+
   windowW = window.innerWidth;
   windowH = window.innerHeight;
 
@@ -115,15 +118,12 @@ $(document).ready(function() {
     if (windowW < canvasWH || windowH < canvasWH) {
       //Remove canvas and show error message.
       $("#sketch-holder").remove();
-      console.log("The browser window is WAY too small. The game window is 600x600. Consider closing the console and reloading.");
-      showMessage("alert","Sorry, your browser window is too small to fit the game window (600x600).\
-        You could try increasing your monitor resolution, making some space in the browser by removing toolbars \
-        or other addons that take space, or just using a larger monitor.");
+      console.log(tooSmallCsl);
+      showMessage("alert",wayTooSmall);
     }else{
       //Fit the game window anyway by moving it top-left
-      console.log("The browser window is too small. Consider closing the console and reloading.");
-      showMessage("alert info","Your browser window is too small to fit the game window normally, so \
-      when you click play, the game window will move to the top-left corner of the screen.");
+      console.log(tooSmallCsl);
+      showMessage("alert info",tooSmall);
       screenTooSmall = true;
     };
   };
@@ -169,7 +169,7 @@ $(document).ready(function() {
     }else if (mouseOverYes) {
       //If win or lose, and yes is clicked
       if (scoreSubmitted) {
-        showMessage("alert info","Your current score was already submitted.<br>Play another game to get a better score.");
+        showMessage("alert info",alreadySubmitted);
       }else{
         $("#score").val( score );
         $("#addBTN").prop("disabled", false);
@@ -180,7 +180,7 @@ $(document).ready(function() {
           $("#scoreTable").css({"visibility":"hidden","display":"none"});
         };
         playing = false;
-        showMessage("alert info","Enter your name above,<br>a comment (optional), and then click \"Submit Score\"");
+        showMessage("alert info",submitInstructions);
       };
 
     }else if(settings){
@@ -191,21 +191,12 @@ $(document).ready(function() {
 
   //About
   $("#about").click(function(){
-    showMessage("alert info", "I made this page to demonstrate how MongoDB, Express, AngularJS, and NodeJs\
-     work together to create a MEAN web app.<br>\
-     At first it was just a database, but to make it more useful I made this clone of the game Snake\
-     that at the end lets you send your score to a database.");
+    showMessage("alert info", aboutMsg);
   });
 
   //About the game
   $("#aboutGame").click(function(){
-    showMessage("alert info","\
-      <span style=\"color: black;\">★</span>Use the arrow keys to move<br>\
-      <span style=\"color: black;\">★</span>Eat the food (the white dots)<br>\
-      <span style=\"color: black;\">★</span>When the Crawler gets long enough to cover the entire playing field, you win<br>\
-      <span style=\"color: black;\">★</span>Get a higher score by eating the bonus food (the green dots)<br>\
-      <span style=\"color: black;\">★</span>Click the game frame again to pause<br>\
-      <span style=\"color: black;\">★</span>Press ENTER to open the settings menu");
+    showMessage("alert info",gameGuideMsg);
   });
 
   //Show Highscores Button
@@ -215,23 +206,23 @@ $(document).ready(function() {
         $("#sketch-holder").css({"visibility":"hidden"})
       };
       $("#scoreTable").css({"visibility":"visible","display":"block"});
-      $("#showHS").html("Hide Highscores");
+      $("#showHS").html(hideScoresBTNLabel);
       highscoresVisible = true;
     }else{
       if (screenTooSmall) {
         $("#sketch-holder").css({"visibility":"visible"})
       };
       $("#scoreTable").css({"visibility":"hidden","display":"none"});
-      $("#showHS").html("Show Highscores");
+      $("#showHS").html(showScoresBTNLabel);
       highscoresVisible = false;    
     }
   });
 
 
   function updateScore(nameVal,commentVal,scoreVal,idToModify,dbfull){
-    let warningMessage = "There is already a highscore with the same name, this will update the score. Continue?";
+    let warningMessage = updateScoreMsg;
     if (dbfull) {
-      warningMessage = "Since the database is full, submitting this score will remove the lowest existing highscore to make room. Continue?";
+      warningMessage = dbFullMsg;
     };
 
     confirmBox("alert warning",warningMessage,
@@ -246,12 +237,12 @@ $(document).ready(function() {
             score: scoreVal
           },
           success: function() {
-            showMessage("alert info","Highscore updated.")
+            showMessage("alert info",hsUpdated)
             emptyFields();
           },
           error: function(err){
             //console.log("Error: " , err);
-            showMessage("alert","An error has occurred.");
+            showMessage("alert",errorMsg);
           },
           complete: function(){
           }
@@ -280,14 +271,14 @@ $(document).ready(function() {
     //Check if there is name, comment is optional, score should always be there.
     if (!usernameVal) {
       //No name
-      showMessage("alert","You must enter a name.");      
+      showMessage("alert",enterANameMsg);      
       return;
     };
 
     //If there is already an entry with the same name and score
     for (let i = 0; i < highscoreArray.length; i++) {
       if (usernameVal === highscoreArray[i].name && parseInt(scoreVal) <= parseInt(highscoreArray[i].score) ) {
-        showMessage("alert warning","This name already achieved an equal or better score.<br>Pick another name, or get a better score.")
+        showMessage("alert warning",pickDifferentNameMsg)
         return;
       };
       //If it has same name but higher score, update score if it's higher
@@ -327,7 +318,7 @@ $(document).ready(function() {
         score: scoreVal
       },
       success: function() {
-        showMessage("alert info","The score was submitted.");
+        showMessage("alert info",successfullySubmitted);
         emptyFields();
         $("#addBTN").prop("disabled", true);
         scoreSubmitted = true;
@@ -337,7 +328,7 @@ $(document).ready(function() {
       },
       error: function(err){
         //console.log("Error: " , err);
-        showMessage("alert","An error has occurred.");
+        showMessage("alert",errorMsg);
       },
       complete: function(){
       }
