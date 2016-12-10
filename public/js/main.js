@@ -108,8 +108,9 @@ app.controller("ctrl", function($scope, $http) {
 
 
 $(document).ready(function() {
-  //TODO: Detect browser language, and call function if italian
-  //toItalian();
+  //Detect browser language, and translate if italian
+  let userLang = navigator.language || navigator.userLanguage; 
+  if(userLang == "it-IT" || userLang == "it"){toItalian();};
 
   windowW = window.innerWidth;
   windowH = window.innerHeight;

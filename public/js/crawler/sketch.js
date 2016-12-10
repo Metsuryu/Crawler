@@ -161,7 +161,7 @@ function preload() {
   //Eating sound effect
   eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
-  //Background music //TODO: Change BGM to my own
+  //Background music
   BGM = loadSound("audio/CrawlerTrack.mp3");
   BGM.setVolume(musicVolume);
 }
@@ -177,15 +177,8 @@ function setup() {
   lastPos = currentPos;
 }
 
-//TODO: Optional: See if I can make this non-blocking/async
+
 function BGMPlay() {
-/*//This attempt at making this async doesn't work
-  setTimeout ( function() {
-    if (BGM.isPlaying()) {BGM.stop();};
-    BGM.loop();
-    BGM.play();
-    },0);
-*/
     if (BGM.isPlaying()) {BGM.stop();};
     BGM.loop();
     BGM.play();
@@ -346,7 +339,8 @@ function pauseText (){
   rect(195,260,210,60);
   fill(textColor);
   textSize(26);
-  text("Click to play", 200, 300);
+  if (italianOn) {textSize(18);};
+  text(clickToPlayLabel, 200, 300);
 }
 
 
@@ -363,19 +357,20 @@ function endScreen(endText){
   textSize(26);
   endTX = 240; //Adjust to victory position if it was previously changed by a gameover.
   if (endText === "Game Over") {endTX = 215;}; //Adjust positioning
+  if (endText === "Hai Perso") {endTX = 225;}; //Adjust positioning
   text(endText, endTX, endTY);
 
   textSize(24);
   fill(textBG);
   rect(120,235,350,50);
   fill(textColor);
-  text("Your score is: " + score, 180, 270);
+  text(scoreIsLabel + score, scoreIsLabelX, 270);
 
   textSize(22);
   fill(textBG);
   rect(25,305,540,50);
   fill(textColor);
-  text("Would you like to submit your score?", 40, 340);
+  text(askSubmitLabel, askSubmitLabelX, 340);
 
   textSize(22);
   if (mouseOverYes) {
@@ -385,7 +380,7 @@ function endScreen(endText){
   }  
   rect(yesX,yesY,yesW,yesH);
   fill(textColor);
-  text("Yes", 185, 400);
+  text(yes, yesLabelX, 400);
 
   textSize(22);
   if (mouseOverPlayAgain) {
@@ -396,7 +391,7 @@ function endScreen(endText){
   rect(paX,paY,paW,paH);
   fill(textColor);
   textAlign(CENTER);
-  text("Play\nagain", 360, 400);
+  text(playAgainLabel, 360, 400);
   textAlign(LEFT);
 }
 
@@ -410,7 +405,8 @@ function settingsMenu(){
   rect(210,60,180,50);
   fill(textColor);
   textSize(26);
-  text("Settings", setTX, setTY);
+  if (italianOn) {textSize(23);};
+  text(settingsLabel, setTX, setTY);
   //Closing X
   if (mouseOverX) {
     fill(hovered);
@@ -451,11 +447,11 @@ function settingsMenu(){
   rect(musX,musY,musW,musH);
   fill(textColor);
   if (!music) {
-    musicStatus = "Muted";
+    musicStatus = mutedLabel;
   }else{
     musicStatus = Math.round( ( musicVolume )*10 ) +"/10"; //*10 so it shows in a scale of 1 to 10 instead of 0.1 to 1.
   }
-  text("Music: " + musicStatus, musTX, musTY);
+  text(musicLabel + musicStatus, musTX, musTY);
   //Audio
   //++
   textSize(30);
@@ -486,7 +482,7 @@ function settingsMenu(){
   rect(auX,auY,auW,auH);
   fill(textColor);
   if (!audio) {
-    audioStatus = "Muted";
+    audioStatus = mutedLabel;
   }else{
     audioStatus = Math.round( ( audioVolume )*10 ) +"/10"; //*10 so it shows in a scale of 1 to 10 instead of 0.1 to 1.
   }
@@ -516,7 +512,8 @@ function settingsMenu(){
   fill(textBG);
   rect(speedX,speedY,speedW,speedH);
   fill(textColor);
-  text("Speed cap: " + fr.toPrecision(3)+"/"+frCap.toPrecision(3), spTX, spTY);
+  if (italianOn) {textSize(16);};
+  text(speedCapLabel + fr.toPrecision(3)+"/"+frCap.toPrecision(3), spTX, spTY);
   //Press ENTER to resume
   if (mouseOverResume) {
     fill(hovered);
@@ -526,7 +523,8 @@ function settingsMenu(){
   rect(resumeX,resumeY,resumeW,resumeH);
   fill(textColor);
   textSize(20);
-  text("\"ENTER\" to resume", resumeTX, resumeTY);
+  if (italianOn) {textSize(18);};
+  text(resumeLabel, resumeTX, resumeTY);
   //Normalize textAlign
   textAlign(LEFT);
 }
@@ -662,9 +660,6 @@ function isMouseOver(x,y,w,h){
   };
 }
 
-
-
-
 function draw() {
   if(!playing && !gameOver && !win){
     pauseText();
@@ -684,13 +679,13 @@ function draw() {
       mouseOverPlayAgain = false;
     };
     if (win) {
-      endScreen("Victory!");
+      endScreen(winLabel);
     }else if(gameOver){
       if (music) {
         //Stop the music on gameOver. "music" is still true, so if the game restats the music restarts.
         BGM.stop();
       };
-      endScreen("Game Over");
+      endScreen(gameOverLabel);
     };
   }else if (settings) {
     s.show();

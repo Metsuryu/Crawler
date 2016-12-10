@@ -39,7 +39,7 @@ function Crawler() {
       //Don't know how to reproduce this, and it happens rarely, so for now it's low priority.
       //Sometimes an element inside the tail array is missing, for some reason, so it causes a crash since it's undefined
       if (!this.tail[i]) {
-        //Skip the current iteration if the tail piece is missing.
+        //Skip the current iteration if the tail piece is missing. (This is the workaround)
         continue;
       };
       let pos = this.tail[i];
@@ -125,11 +125,11 @@ function Crawler() {
     //Score and speed
     fill(50, 130, 255);
     textSize(14);
-    text("Score: " + score, 10, 590);
-    text("Speed: " + fr.toPrecision(3), 500, 590);
+    text(scoreLabelGame + score, 10, 590);
+    text(speedLabel + fr.toPrecision(3), speedLabelX, 590);
     //Bonus food time
     if (bonusFoodSpawned) {
-      text("Eat before: " + bonusFoodTime, 240, 590);
+      text(eatBeforeLabel + bonusFoodTime, 240, 590);
     };
     //Bottom Line
     stroke(255);
