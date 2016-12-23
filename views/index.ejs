@@ -43,7 +43,7 @@ Facebook: www.facebook.com/clanny.official
 
 <div id="buttons">
   <input id="English" type="button" class="btn btn-primary" title="Translates this page to English." value="English" onclick="toEnglish();"/>
-  <input id="Italiano" type="button" class="btn btn-primary" title="Traduce questa pagina in Italiano." value="Italiano" onclick= "toItalian();"/>  
+  <input id="Italiano" type="button" class="btn btn-primary" title="Traduce questa pagina in Italiano." value="Italiano" onclick="toItalian();"/>
 </div>
 
 </div>
@@ -91,9 +91,9 @@ Facebook: www.facebook.com/clanny.official
 <center>
 <table id="entriesTable">
   <tr>
-    <th id="nameTableLabel">Name <input id="searchField" type="text" name="searchTable" placeholder="&#128269; Search" data-ng-model="searchNG"></th>
-    <th>Comment</th>
-    <th>Score</th>
+    <th> <span id="nameTableLabel">Name </span> <input id="searchField" type="text" name="searchTable" placeholder="&#128269; Search" data-ng-model="searchNG"/></th> 
+    <th id="commentTableLabel">Comment</th>
+    <th id="scoreTableLabel">Score</th>
 
 <!--Sort dynamically and limit number of entries per page, sorted server-side-->
 <tr class="entry" data-ng-repeat="entry in entrylist | filter:searchNG">

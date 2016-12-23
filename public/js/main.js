@@ -104,6 +104,7 @@ app.controller("ctrl", function($scope, $http) {
       highscoreArray = $scope.entrylist;
     });
   });
+  
 });
 
 

@@ -12,7 +12,9 @@ let showScoresBTNLabel = "Show highscores";
 let hideScoresBTNLabel = "Hide highscores";
 let dismissAll = "Dismiss all &times;"
 let highscoresLabel = "Highscores";
-let nameTableLabel = "Name <input id=\"searchField\" type=\"text\" name=\"searchTable\" placeholder=\"&#128269; Search\" data-ng-model=\"searchNG\">";
+let nameTableLabel = "Name ";
+let commentTableLabel = "Commento";
+let scoreTableLabel = "Punteggio";
 let yes = "Yes";
 let yesLabelX = 185;
 
@@ -80,6 +82,8 @@ function applyTranslation(){
 	trTxt("closeAll",dismissAll);
 	trTxt("highscoresLabel",highscoresLabel);
 	trTxt("nameTableLabel",nameTableLabel);
+	trTxt("commentTableLabel",commentTableLabel);
+	trTxt("scoreTableLabel",scoreTableLabel);	
 };
 
 /*###########Italiano###########*/
@@ -96,7 +100,10 @@ function toItalian(){
 	hideScoresBTNLabel = "Nascondi punteggi";
 	dismissAll = "Chiudi tutti &times;"
 	highscoresLabel = "Punteggi";
-	nameTableLabel = "Nome <input id=\"searchField\" type=\"text\" name=\"searchTable\" placeholder=\"&#128269; Cerca\" data-ng-model=\"searchNG\">";
+	nameTableLabel = "Nome ";
+	commentTableLabel = "Commento";
+	scoreTableLabel = "Punteggio";
+	$("#searchField").attr("placeholder", "🔍 Cerca");
 	yes = "Sì";
 	yesLabelX = 198;
 
@@ -165,7 +172,10 @@ function toEnglish(){
 	hideScoresBTNLabel = "Hide highscores";
 	dismissAll = "Dismiss all &times;"
 	highscoresLabel = "Highscores";
-	nameTableLabel = "Name <input id=\"searchField\" type=\"text\" name=\"searchTable\" placeholder=\"&#128269; Search\" data-ng-model=\"searchNG\">";
+	nameTableLabel = "Name ";
+	commentTableLabel = "Comment";
+	scoreTableLabel = "Score";
+	$("#searchField").attr("placeholder", "🔍 Search");
 	yes = "Yes";
 	yesLabelX = 185;
 
