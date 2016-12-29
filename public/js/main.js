@@ -5,7 +5,7 @@ let highscoresVisible = false;
 let highscoreArray;
 let clickedPage = 1;
 let dbSize = 0;
-const resultsPerPage = 10; //Must be equal to limitOfResults in app.js
+let resultsPerPage = 10; //Must be equal to limitOfResults in app.js
 const limitOfDatabase = 100; //Arbitrary low limit to keep it light.
 let dbIsFull = false;
 const minWidth = 1076;
@@ -89,12 +89,10 @@ app.controller("ctrl", function($scope, $http) {
     generatePageButtons(dbSize);
   });
 
-
   $("#scorePages").on("click", ".scorePageButton", function(){
     $(".scorePageButton").removeClass("Current");
     $(this).addClass("Current");
-    var page = $(this).html();
-    clickedPage = page;
+    clickedPage = $(this).html();
     $http({
       url: "/entries", 
       method: "GET",
@@ -104,7 +102,23 @@ app.controller("ctrl", function($scope, $http) {
       highscoreArray = $scope.entrylist;
     });
   });
-  
+
+  $("#searchField").on("keyup", function(){
+    let searchInput = "s";
+    let searchValue = $(this).val();
+    if (searchValue === "") {
+      searchInput = clickedPage;
+    };
+    $http({
+      url: "/entries", 
+      method: "GET",
+      params: {pageToDisplay: searchInput}
+    }).then(function (response) {
+      $scope.entrylist = response.data;
+      highscoreArray = $scope.entrylist;
+    });
+  });
+
 });
 
 

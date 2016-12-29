@@ -13,7 +13,7 @@ app.engine('html', require('ejs').__express);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 //const jsonParser = bodyParser.json();
 const port = process.env.port || 3000;
-const limitOfResults = 10; //Max number of results displayed per page, must be equal to resultsPerPage in main.js
+let limitOfResults = 10; //Max number of results displayed per page, must be equal to resultsPerPage in main.js when not searching
 
 function sanitizeString(str){
   str = str.replace(/([/\\<>"'])+/g,"");
@@ -51,7 +51,12 @@ app.get("/entries",function(req, res){
   let items = [];
   let pageToDisplay = req.query.pageToDisplay;
   let skipEntries = 0;
-  if (pageToDisplay > 1) {
+  if (pageToDisplay === "s") {
+
+    limitOfResults = 100;
+
+  }else if (pageToDisplay > 1) {
+    limitOfResults = 10;
     skipEntries = (pageToDisplay*limitOfResults) - limitOfResults;
   };
 
@@ -74,6 +79,7 @@ app.get("/entries",function(req, res){
         res.json( items );
       }).sort( { score: -1 } ).limit( limitOfResults ).skip(skipEntries); 
     }else{
+      limitOfResults = 10;
       //Otherwise, just display all the results
       Entry.find(function(err, entries) {
         if(err) return console.error(err);
