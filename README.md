@@ -14,9 +14,8 @@ You can play the game at http://crawler.cloudno.de/
 
 Crawler TODOs:
 
-- Add new music
+- Make game compatible with touchscreens, and use it in place of the standard one if touch is detected
 
 Rest of the site TODOs:
 
-- Make a mobile view (detect if user is on mobile, and give them that view instead of standard one.)
-- Make game compatible with touchscreens, and use it in place of the standard one if touch is detected.
+- Make a mobile view

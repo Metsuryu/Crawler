@@ -5,6 +5,8 @@ My github: https://github.com/Metsuryu
 #####
 The logo was made by Chiara Cannistrà - Clanny
 Facebook: www.facebook.com/clanny.official
+
+Music by Irio Masahiro.
 #####
 */
 
@@ -47,7 +49,7 @@ let musicVolume = 0.5;
 let musicStatus = "";
 let audioStatus = "";
 let settings = false;
-//Speed of the game is tied to framerate
+//Speed of the game is tied to framerate, sorry TotalBiscuit
 const maxFrCap = 30;
 let frCap = 15;
 let startingFr = 8;
@@ -59,7 +61,13 @@ const RightDir =  {x:cSpd, y:0};
 const LeftDir =   {x:-cSpd,y:0};
 let currentDir = {x:0, y:0};
 
-//Buttons positions
+/*
+Buttons positions
+
+X and Y are the coordinates of the button.
+TX and TY are X and Y of the text.
+W and H are width and height of the button.
+*/
 let endTX = 240; //Changes depending on victory or game over
 const endTY = 200;
 const setTX = 300;
@@ -162,7 +170,7 @@ function preload() {
   eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music
-  BGM = loadSound("audio/CrawlerTrack.mp3");
+  BGM = loadSound("audio/CrawlerTrack2.mp3");
   BGM.setVolume(musicVolume);
 }
 
@@ -197,8 +205,8 @@ function containsObject(obj, list) {
 }
 
 // Returns a random integer between min (included) and max (excluded)
-//TODO: Added +1 to the max, since it may be excluded. Need more testing to verify.
-//TODO: Now removed the +1, seems to work fine, try to change this if bugs. 
+//Bug? Added +1 to the max, since it may be excluded. Need more testing to verify.
+//Update: Now removed the +1, seems to work fine, try to change this if bugs. 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -253,7 +261,7 @@ if (overlap) {
   let allowedCoords = [];
 
   for (let j = 0; j < s.tail.length; j++) {
-    //TODO: Same as (BUG1)
+    //BUG: Same as (BUG1)
     if (!s.tail[j]) {
       continue;
     };
@@ -762,9 +770,7 @@ function draw() {
   };
 }
 
-//TODO: Fix bug that causes death when turning rapidly making it so you eat the tail piece right behind the head
-//TODO: The fix to that bug causes poor responsiveness at low speeds, 
-//Maybe make it so move commands can be queued (up to 1) for better responsiveness, test it and see how it feels.
+//Keyboard handling
 function keyPressed() {
   switch(keyCode) {
     case ENTER:

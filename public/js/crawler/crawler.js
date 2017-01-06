@@ -35,7 +35,7 @@ function Crawler() {
 
   this.death = function() {
     for (let i = 0; i < this.tail.length; i++) {
-      //TODO: (BUG1:Undefined tail) Temporary workaround to missing tail on win. 
+      //BUG: (BUG1:Undefined tail) Temporary workaround to missing tail on win. 
       //Don't know how to reproduce this, and it happens rarely, so for now it's low priority.
       //Sometimes an element inside the tail array is missing, for some reason, so it causes a crash since it's undefined
       if (!this.tail[i]) {
@@ -102,7 +102,7 @@ function Crawler() {
             fill(red, green, blue);
           };
         };
-      //TODO: Same as (BUG1)
+      //BUG: Same as (BUG1)
       if (!this.tail[i]) {
         continue;
       };
