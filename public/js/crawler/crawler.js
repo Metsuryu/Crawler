@@ -83,7 +83,7 @@ function Crawler() {
         green = Math.floor(Math.random() * 255);
         blue = Math.floor(Math.random() * 255);
         fill(red, green, blue);
-      }else if (win) {
+      }else if (win || gameOver) {
           //A bright tile flows through the whole tail and loops until the game is restarted
           if (i === counter) {
             red = 215;
@@ -113,7 +113,7 @@ function Crawler() {
     green = 193;
     blue = 166;
     fill(red, green, blue);
-    if (win) {
+    if (win || gameOver) {
       counter +=1;
       if (counter > this.tail.length) {
         fill(215, 255, 246);
