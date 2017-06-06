@@ -57,11 +57,11 @@
 
 table {
     top: 90px; 
-    left: 230px; 
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 70%;
     table-layout:fixed;
+    margin: 0 auto;
     padding-bottom: 1em;
     margin-bottom: 3em;
     box-shadow: 1px 5px 10px #999;
@@ -146,6 +146,8 @@ html{
     /*background-color: #323232; Keeping it white, since it causes problems on smaller screens otherwise.*/
     height: 600px;
     width: 600px;
+    margin: auto;
+    text-align: center;
 }
 
 #scoreTable {
@@ -153,7 +155,15 @@ html{
     visibility: visible;
 }
 
+#highscoresLabel{
+    font-family: Times;
+    text-align: center;
+}
 
+#scorePages{
+    margin: auto;
+    text-align: center;
+}
 
 .scorePageButton {
     background-color: white;
