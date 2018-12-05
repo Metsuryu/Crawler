@@ -35,11 +35,11 @@ function showMessage(msgType, info){
 };
 
 
-function confirmBox(msgType, info,yes,no){
-  /*Type can be same as showMessage*/
+function confirmBox(msgType, info, yes, no){
+  /* msgType can be same as showMessage */
   let infoMsg = "<div class=\""+ msgType +"\"><span class=\"closebtn\" \
   onclick=\"this.parentElement.style.display='none';\">&times;</span>"+ info +"\
-  <button id=\"BTNyes\" class=\"button\">"+yes+"</button> <button id=\"BTNno\" class=\"button\">No</button></div>";
+  <button id=\"BTNyes\" class=\"button\">Yes</button> <button id=\"BTNno\" class=\"button\">No</button></div>";
   $(".messageBox").css("visibility", "visible");
   $("#messageBox").append(infoMsg);
   $("#BTNyes").click(function(){

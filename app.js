@@ -3,33 +3,34 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 //Config
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + '/public'));
-app.engine('html', require('ejs').__express);
+app.use(express.static(__dirname + "/public"));
+app.engine("html", require("ejs").__express);
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 //const jsonParser = bodyParser.json();
 const port = process.env.port || 3000;
 let limitOfResults = 10; //Max number of results displayed per page, must be equal to resultsPerPage in main.js when not searching
 
 function sanitizeString(str){
-  str = str.replace(/([/\\<>"'])+/g,"");
+  str = str.replace(/([/\\<>""])+/g,"");
   return str.trim();
 };
 
 
 //To fix the deprecated promise issue use native promises here, like so:
-//mongoose.Promise = global.Promise; // Can't use it on Cloudnode, global.Promise only supported in ES6
+//mongoose.Promise = global.Promise; // Can"t use it on Cloudnode, global.Promise only supported in ES6
 
 // Mongoose connection to MongoDB
-mongoose.connect('mongodb://localhost/test');  //For local testing
+//mongoose.connect("mongodb://localhost/test");  //For local testing
+mongoose.connect("mongodb://testuser:testpassx@ds021346.mlab.com:21346/everythingdb");
 
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
   //connected
 });
 
@@ -40,12 +41,12 @@ let entrySchema = mongoose.Schema({
 });
 
 // NOTE: methods must be added to the schema before compiling it with mongoose.model()
-let Entry = mongoose.model('Entry', entrySchema);
+let Entry = mongoose.model("Entry", entrySchema);
 
 //Routes
 app.get("/",function(req, res){
-    res.render('index'); 
-  }); 
+  res.render("index"); 
+}); 
 
 app.get("/entries",function(req, res){
   let items = [];
@@ -121,21 +122,21 @@ app.put("/updateentry", urlencodedParser, function(req,res){
     { "_id" : entryid },
     {
       $set: { name: nameVal, comm: commVal, score: scoreVal },
-      }, function(err, results) {
-        if (err) {console.log(err);};
-        });
+    }, function(err, results) {
+      if (err) {console.log(err);};
+    });
   res.send("");
   res.end();
 });
 
 //Google verification
 app.get("/google792be884c8fe585c.html",function(req, res){
-    res.render( "google792be884c8fe585c.html" );
+  res.render( "google792be884c8fe585c.html" );
 });
 
 //404 Route (Keep this as the last route)
-app.get('*', function(req, res){
-  res.status(404).end('404 \nPage not found');
+app.get("*", function(req, res){
+  res.status(404).end("404 \nPage not found");
 });
 
 app.listen(port);
