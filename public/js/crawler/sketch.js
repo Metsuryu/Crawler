@@ -170,7 +170,7 @@ function preload() {
   eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music
-  BGM = loadSound("audio/CrawlerTrack2.mp3");
+  BGM = loadSound("audio/CrawlerTrack1.mp3");
   BGM.setVolume(musicVolume);
 }
 
@@ -747,7 +747,8 @@ function draw() {
         };
       if ( s.eat(bonusFood) ) {
         if (audio) {eatSFX.play();};
-        score += 10;
+        var bonusFoodValue = 10;
+        score += bonusFoodValue;
         bonusFood = "";
         bonusFoodSpawned = false;
         };
