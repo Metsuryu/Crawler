@@ -165,12 +165,12 @@ let eatSFX = "";
 let BGM = "";
 
 function preload() {
-  fontArcade = loadFont("fonts/sf-pixelate.bold-oblique.ttf");
+  fontArcade = loadFont("../fonts/sf-pixelate.bold-oblique.ttf");
   //Eating sound effect
-  eatSFX = loadSound("audio/eat.wav");
+  eatSFX = loadSound("../audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music
-  BGM = loadSound("audio/CrawlerTrack1.mp3");
+  BGM = loadSound("../audio/CrawlerTrack1.mp3");
   BGM.setVolume(musicVolume);
 }
 
@@ -206,7 +206,7 @@ function containsObject(obj, list) {
 
 // Returns a random integer between min (included) and max (excluded)
 //Bug? Added +1 to the max, since it may be excluded. Need more testing to verify.
-//Update: Now removed the +1, seems to work fine, try to change this if bugs. 
+//Update: Now removed the +1, seems to work fine, try to change this if bugs.
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -222,7 +222,7 @@ function victory(){
 }
 
 function pickLocation() {
-  //Pick a new location for the food. 
+  //Pick a new location for the food.
   //Can't be below the bottom line or on top of the body of the crawler
   let created = false;
   let overlap = false;
@@ -269,7 +269,7 @@ if (overlap) {
     forbiddenCoords.push({ x: (posNew.x/scl) , y: (posNew.y/scl) });
     };
 
-//This checks which tiles are available by adding every coord to the allowedCoords array, 
+//This checks which tiles are available by adding every coord to the allowedCoords array,
 //only if they are not contained in the forbiddenCoords array
       for (let k = cols; k >= 0; k--) {
           for (let n = rows; n >= 0; n--) {
@@ -289,7 +289,7 @@ if (overlap) {
     //Create bonus piece of food if there is at least one more free space
     if (allowedCoords.length > 1) {
       let bonusFreeLoc = getRandomInt(0,allowedCoords.length-1);
-      //If the random bonus location is the same as the normal food, see if one higher or one lower is available, and pick that. 
+      //If the random bonus location is the same as the normal food, see if one higher or one lower is available, and pick that.
       if (bonusFreeLoc === freeLoc) {
         if (allowedCoords[bonusFreeLoc+1]) {
           bonusFreeLoc += 1;
@@ -385,7 +385,7 @@ function endScreen(endText){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(yesX,yesY,yesW,yesH);
   fill(textColor);
   text(yes, yesLabelX, 400);
@@ -395,7 +395,7 @@ function endScreen(endText){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(paX,paY,paW,paH);
   fill(textColor);
   textAlign(CENTER);
@@ -420,7 +420,7 @@ function settingsMenu(){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(xX,xY,xW,xH);
   fill(textColor);
   textSize(30);
@@ -451,7 +451,7 @@ function settingsMenu(){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(musX,musY,musW,musH);
   fill(textColor);
   if (!music) {
@@ -486,7 +486,7 @@ function settingsMenu(){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(auX,auY,auW,auH);
   fill(textColor);
   if (!audio) {
@@ -527,7 +527,7 @@ function settingsMenu(){
     fill(hovered);
   }else{
     fill(textBG);
-  }  
+  }
   rect(resumeX,resumeY,resumeW,resumeH);
   fill(textColor);
   textSize(20);
@@ -718,7 +718,7 @@ function draw() {
     mouseOverResume = isMouseOver(resumeX,resumeY,resumeW,resumeH);
     //X Button
     mouseOverX = isMouseOver(xX,xY,xW,xH);
-    
+
     settingsMenu();
   }else{
     background(backgroundColor);
@@ -792,7 +792,7 @@ function keyPressed() {
       break;
     default:
 };
-  
+
   if (lastPos.x === currentPos.x && lastPos.y === currentPos.y) {
     //Don't allow more movement until the head is in a new position
   }else{

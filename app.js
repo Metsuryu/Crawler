@@ -2,7 +2,6 @@
 // Dependencies
 const express = require("express");
 const app = express();
-const http = require("http");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
@@ -20,7 +19,6 @@ function sanitizeString(str){
   return str.trim();
 };
 
-
 //To fix the deprecated promise issue use native promises here, like so:
 //mongoose.Promise = global.Promise; // Can"t use it on Cloudnode, global.Promise only supported in ES6
 
@@ -30,9 +28,9 @@ mongoose.connect("mongodb://testuser:testpassx@ds021346.mlab.com:21346/everythin
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {
+/* db.once("open", function() {
   //connected
-});
+}); */
 
 let entrySchema = mongoose.Schema({
   name: String,
@@ -45,8 +43,8 @@ let Entry = mongoose.model("Entry", entrySchema);
 
 //Routes
 app.get("/",function(req, res){
-  res.render("index"); 
-}); 
+  res.render("index");
+});
 
 app.get("/entries",function(req, res){
   let items = [];
@@ -78,7 +76,7 @@ app.get("/entries",function(req, res){
         });
 
         res.json( items );
-      }).sort( { score: -1 } ).limit( limitOfResults ).skip(skipEntries); 
+      }).sort( { score: -1 } ).limit( limitOfResults ).skip(skipEntries);
     }else{
       limitOfResults = 10;
       //Otherwise, just display all the results
@@ -94,7 +92,7 @@ app.get("/entries",function(req, res){
           });
         });
         res.json( items );
-      }).sort( { score: -1 } ); 
+      }).sort( { score: -1 } );
     };
   });
 });

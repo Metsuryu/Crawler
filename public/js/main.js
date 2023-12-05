@@ -1,3 +1,4 @@
+const serverLess = true;
 let playing = false;
 let inCinemaMode = false;
 let scoreSubmitted = false;
@@ -22,7 +23,7 @@ function sanitizeString(str){
 };
 
 function showMessage(msgType, info){
-  /*msgType can be: 
+  /*msgType can be:
   "alert" Red
   "alert success" Green
   "alert info" Blue
@@ -72,9 +73,13 @@ function generatePageButtons(databaseSize){
 
 let app = angular.module("Crawler", []);
 app.controller("ctrl", function($scope, $http) {
+  if (serverLess) {
+    return;
+  }
+
   //Get the database entries form the server
   $http({
-    url: "/entries", 
+    url: "/entries",
     method: "GET",
     params: {pageToDisplay: clickedPage}
   }).then(function (response) {
@@ -94,7 +99,7 @@ app.controller("ctrl", function($scope, $http) {
     $(this).addClass("Current");
     clickedPage = $(this).html();
     $http({
-      url: "/entries", 
+      url: "/entries",
       method: "GET",
       params: {pageToDisplay: clickedPage}
     }).then(function (response) {
@@ -110,7 +115,7 @@ app.controller("ctrl", function($scope, $http) {
       searchInput = clickedPage;
     };
     $http({
-      url: "/entries", 
+      url: "/entries",
       method: "GET",
       params: {pageToDisplay: searchInput}
     }).then(function (response) {
@@ -124,7 +129,7 @@ app.controller("ctrl", function($scope, $http) {
 
 $(document).ready(function() {
   //Detect browser language, and translate if italian
-  let userLang = navigator.language || navigator.userLanguage; 
+  let userLang = navigator.language || navigator.userLanguage;
   if(userLang == "it-IT" || userLang == "it"){toItalian();};
 
   windowW = window.innerWidth;
@@ -230,7 +235,7 @@ $(document).ready(function() {
       };
       $("#scoreTable").css({"visibility":"hidden","display":"none"});
       $("#showHS").html(showScoresBTNLabel);
-      highscoresVisible = false;    
+      highscoresVisible = false;
     }
   });
 
@@ -248,8 +253,8 @@ $(document).ready(function() {
           url: "/updateentry",
           data: {
             entryId: idToModify,
-            username: nameVal, 
-            comment: commentVal, 
+            username: nameVal,
+            comment: commentVal,
             score: scoreVal
           },
           success: function() {
@@ -262,7 +267,7 @@ $(document).ready(function() {
           },
           complete: function(){
           }
-        });        
+        });
       },
       function no(){
         return;
@@ -287,7 +292,7 @@ $(document).ready(function() {
     //Check if there is name, comment is optional, score should always be there.
     if (!usernameVal) {
       //No name
-      showMessage("alert",enterANameMsg);      
+      showMessage("alert",enterANameMsg);
       return;
     };
 
@@ -324,13 +329,13 @@ $(document).ready(function() {
 
     //Make a table entry with data
     let tableEntry = "<tr class=\"entry\" id=\"0\"><td>" + usernameVal + "</td><td>" + commentVal + "</td><td>" + scoreVal + "</td></tr>";
-    
+
     $.ajax({
       type: "POST",
       url: "/addentry",
-      data: { 
-        username: usernameVal, 
-        comment: commentVal, 
+      data: {
+        username: usernameVal,
+        comment: commentVal,
         score: scoreVal
       },
       success: function() {
