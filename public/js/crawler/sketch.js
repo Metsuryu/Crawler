@@ -165,12 +165,12 @@ let eatSFX = "";
 let BGM = "";
 
 function preload() {
-  fontArcade = loadFont("../fonts/sf-pixelate.bold-oblique.ttf");
+  fontArcade = loadFont("fonts/sf-pixelate.bold-oblique.ttf");
   //Eating sound effect
-  eatSFX = loadSound("../audio/eat.wav");
+  eatSFX = loadSound("audio/eat.wav");
   eatSFX.setVolume(audioVolume);
   //Background music
-  BGM = loadSound("../audio/CrawlerTrack1.mp3");
+  BGM = loadSound("audio/CrawlerTrack1.mp3");
   BGM.setVolume(musicVolume);
 }
 
