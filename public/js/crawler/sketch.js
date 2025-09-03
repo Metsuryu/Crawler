@@ -374,6 +374,8 @@ function endScreen(endText){
   fill(textColor);
   text(scoreIsLabel + score, scoreIsLabelX, 270);
 
+  // HIDDEN: Score submission UI
+  /*
   textSize(22);
   fill(textBG);
   rect(25,305,540,50);
@@ -389,6 +391,7 @@ function endScreen(endText){
   rect(yesX,yesY,yesW,yesH);
   fill(textColor);
   text(yes, yesLabelX, 400);
+  */
 
   textSize(22);
   if (mouseOverPlayAgain) {
@@ -577,8 +580,11 @@ function submitScore(){
 function mouseClicked(){
   if (win || gameOver && mouseOverPlayAgain) {
     restartgame();
+  // HIDDEN: Score submission functionality
+  /*
   }else if(win || gameOver && mouseOverYes){
     submitScore();
+  */
   };
 
   //Music toggle
@@ -674,12 +680,15 @@ function draw() {
   }else if (win || gameOver) {
     s.show();
     //Track mouse
+    // HIDDEN: Yes button mouse tracking
+    /*
     //Yes
     if ( isMouseOver(yesX,yesY,yesW,yesH) ) {
       mouseOverYes = true;
     }else{
       mouseOverYes = false;
     };
+    */
     //Play Again
     if ( isMouseOver(paX,paY,paW,paH) ) {
       mouseOverPlayAgain = true;
