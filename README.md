@@ -3,7 +3,7 @@ A snake clone.
 
 I made the site mainly to demonstrate the technologies of the MEAN stack, the game was made later to give it some purpose.
 
-You can play the game at http://crawler.cloudno.de/
+You can play the game at https://metsuryu.github.io/Crawler/public/
 
 # Features
 - Game developed with [**p5js**](https://p5js.org/).
